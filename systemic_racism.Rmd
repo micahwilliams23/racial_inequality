@@ -1,0 +1,13 @@
+---
+title: "Systemic Racism in the United States"
+author: "Micah Williams"
+date: "6/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidycensus)
+library(tidyverse)
+library(gganimate)
+```
