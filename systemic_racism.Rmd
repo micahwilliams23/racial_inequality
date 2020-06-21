@@ -6,7 +6,9 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.height = 5,
+                      fig.width = 9)
 library(tidycensus)
 library(tidyverse)
 library(gganimate)
@@ -14,16 +16,17 @@ library(gganimate)
 theme_set(theme_minimal())
 ```
 
-```{r cali_income}
+```{r household_income, message = T}
+# message = F to supress messages from get_acs()
 
 # import variable labels from .csv (cleaned from load_variables() table, in .csv for easy access)
-var_labels <- read_csv('data/variables_labels.csv') %>%
+var_labels <- read_csv('data/variables_labels.csv',
+                       col_types = 'cc') %>%
   mutate(order = row_number())
 
-# get income data for California blacks from 2018 American Community Survey
-acs_income_black <- get_acs(geography = 'county',
+# get income data for blacks by state from 2018 American Community Survey
+acs_income_black <- get_acs(geography = 'state',
                         table = 'B19001B',
-                        state = '06',
                         year = 2018,
                         summary_var = 'B19001B_001',
                         cache_table = T) %>%
@@ -39,10 +42,9 @@ acs_income_black <- get_acs(geography = 'county',
 var_labels <- var_labels %>%
   mutate(name = str_replace(name, 'B_', 'A_'))
 
-# get income data for California whites from 2018 American Community Survey
-acs_income_white <- get_acs(geography = 'county',
+# get income data for whites by state from 2018 American Community Survey
+acs_income_white <- get_acs(geography = 'state',
                         table = 'B19001A',
-                        state = '06',
                         year = 2018,
                         summary_var = 'B19001A_001',
                         cache_table = T) %>%
@@ -55,28 +57,50 @@ acs_income_white <- get_acs(geography = 'county',
          race = 'White')
 
 # combine black and white income into single table
-cali_income <- acs_income_white %>%
+us_income <- acs_income_white %>%
   full_join(acs_income_black, by = colnames(acs_income_white))
 
-LA_income <- cali_income %>% 
-  filter(GEOID == '06037') %>%
-  group_by(label) %>%
-  mutate(perc_list = group_map(., ~list(.$percent)))
-  
-  
-  mutate(dodge = group_map(., ~if_else(.[.$race == 'White','percent'] > .[.$race == 'Black','percent'],
-                         -0.55, 0.55)))
-    
-LA_income %>% ungroup() %>% gt::gt()
+cali_income <- us_income %>% 
+  filter(GEOID == '06')
 
-LA_income %>% 
+# calculate summary percentages for income levels ( >$75k, <$50k)
+brackets <- us_income %>% 
+  mutate(var_ext = as.numeric(str_remove(variable, '[:alnum:]{7}_')),
+         inc_level = case_when(var_ext >= 12 ~ '>$75k/yr',
+                               var_ext <= 7 ~ '<$35k/yr',
+                               TRUE ~ 'ignore')) %>%
+  filter(inc_level != 'ignore') %>%
+  group_by(inc_level, race) %>%
+  nest() %>%
+  mutate(total_indiv = map_dbl(data, ~ sum(.$estimate)),
+         total_pop = map_dbl(data, ~ sum(unique(.$summary_est))),
+         percent = total_indiv / total_pop * 100) %>%
+  select(race, inc_level, percent) %>%
+  .[c(1,3,2,4),]; brackets
+```
+
+
+```{r income_plot, message = T}
+# summarize states to produce nationwide numbers
+us_income %>% 
+  group_by(label,race) %>%
+  summarize(percent = sum(estimate) / sum(summary_est) * 100) %>%
+  
+  # draw plot, customize with themes and labels
   ggplot(aes(label, percent, fill = race)) +
-  geom_col(position = position_dodge(-0.55)) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
-  labs(title = 'Household Income by Race, Los Angeles',
+  geom_col(position = position_dodge(0.6), alpha = 0.8) +
+  scale_fill_brewer(palette = 'Paired', direction = -1) +
+  scale_y_continuous(labels = paste(seq(0,12,4), '%', sep = '')) +
+  theme(axis.text.x = element_text(hjust = 1)) +
+  labs(title = 'Household Income by Race in the United States (plus D.C. and Puerto Rico)',
+       subtitle = 'Nationwide, black Americans are more likely to be in lower income brackets than white Americans.\nIn total, more than 52% of white Americans make at least $75,000 a year. Only 33% of black Americans\nhave incomes at least that high. More than 45% of black Americans make less than $35,000 a year,\nbut only about 27% of white Americans fall in this category.',
        caption = 'Source: 2018 American Community Survey',
        fill = 'Race',
-       y = 'Percent of Race')
+       y = 'Percent of Race Group in Income Bracket',
+       x = 'Household Income in Last 12 Months') +
+  
+  # flip axes to orient bars horizontally
+  coord_flip()
 
 ```
 
