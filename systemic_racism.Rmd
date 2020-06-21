@@ -10,4 +10,90 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidycensus)
 library(tidyverse)
 library(gganimate)
+
+theme_set(theme_minimal())
 ```
+
+```{r cali_income}
+
+# import variable labels from .csv (cleaned from load_variables() table, in .csv for easy access)
+var_labels <- read_csv('data/variables_labels.csv') %>%
+  mutate(order = row_number())
+
+# get income data for California blacks from 2018 American Community Survey
+acs_income_black <- get_acs(geography = 'county',
+                        table = 'B19001B',
+                        state = '06',
+                        year = 2018,
+                        summary_var = 'B19001B_001',
+                        cache_table = T) %>%
+  
+  # remove 'total' rows, add labels and percentages
+  filter(variable != 'B19001B_001') %>%
+  mutate(percent = estimate / summary_est * 100) %>%
+  left_join(var_labels, by = c('variable' = 'name')) %>%
+  mutate(label = reorder(label, order),
+         race = 'Black')
+
+# change variable names in labels table to match table for white income
+var_labels <- var_labels %>%
+  mutate(name = str_replace(name, 'B_', 'A_'))
+
+# get income data for California whites from 2018 American Community Survey
+acs_income_white <- get_acs(geography = 'county',
+                        table = 'B19001A',
+                        state = '06',
+                        year = 2018,
+                        summary_var = 'B19001A_001',
+                        cache_table = T) %>%
+  
+  # remove 'total' rows, add labels and percentages
+  filter(variable != 'B19001A_001') %>%
+  mutate(percent = estimate / summary_est * 100) %>%
+  left_join(var_labels, by = c('variable' = 'name')) %>%
+  mutate(label = reorder(label, order),
+         race = 'White')
+
+# combine black and white income into single table
+cali_income <- acs_income_white %>%
+  full_join(acs_income_black, by = colnames(acs_income_white))
+
+LA_income <- cali_income %>% 
+  filter(GEOID == '06037') %>%
+  group_by(label) %>%
+  mutate(perc_list = group_map(., ~list(.$percent)))
+  
+  
+  mutate(dodge = group_map(., ~if_else(.[.$race == 'White','percent'] > .[.$race == 'Black','percent'],
+                         -0.55, 0.55)))
+    
+LA_income %>% ungroup() %>% gt::gt()
+
+LA_income %>% 
+  ggplot(aes(label, percent, fill = race)) +
+  geom_col(position = position_dodge(-0.55)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
+  labs(title = 'Household Income by Race, Los Angeles',
+       caption = 'Source: 2018 American Community Survey',
+       fill = 'Race',
+       y = 'Percent of Race')
+
+```
+
+```{r clean_labels, include = F, eval = F}
+
+# extract variable labels from list of census variables
+
+# census_10 <- load_variables(2010, 'acs5')
+
+var_labels <- census_10 %>% 
+  filter(name %in% income_vars) %>%
+  mutate(label = str_remove(label, pattern = 'Estimate!!Total!!'),
+         order = row_number()) %>%
+  select(-concept)
+
+glimpse(var_labels)
+
+# write_csv(clean_labels, 'data/variables_labels.csv')
+```
+
