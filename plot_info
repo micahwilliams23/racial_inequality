@@ -1,3 +1,8 @@
 Writeups for Plots
 Household Income plot:
 Nationwide, black Americans are more likely to be in lower income brackets than white Americans. In total, more than 52% of white Americans make at least $75,000 a year. Only 33% of black Americans\nhave incomes at least that high. More than 45% of black Americans make less than $35,000 a year, but only about 27% of white Americans fall in this category.
+  further exploration: find states where this disparity is greater
+
+Education plot:
+Nearly 47% of black men and more than 48% of black women do not continue to post-secondary education. In contrast, only about 40% of white men and women do not continue to post-secondary education.
+  further exploration: find states where this disparity is greater
