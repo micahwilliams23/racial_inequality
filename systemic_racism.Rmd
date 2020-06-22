@@ -51,7 +51,7 @@ get_acs_table <- function(tbl.id, race, year = 2018, ...){
 }
 ```
 
-```{r household_income}
+```{r income_data}
 # message = F to supress messages from get_acs()
 
 acs_income_black <- get_acs_table('B19001B', 'Black')
@@ -83,22 +83,48 @@ us_income %>%
 ```{r income_plot, message = T}
 
 # summarize states to produce nationwide numbers
-brackets <- us_income %>% 
+brackets <- us_income %>%
+  droplevels() %>%
   group_by(label,race) %>%
-  summarize(percent = sum(estimate) / sum(summary_est) * 100)
+  summarize(percent = sum(estimate) / sum(summary_est) * 100) %>%
+  ungroup()
+
+bracket.order <- brackets %>%
+  select(label) %>%
+  group_by(label) %>%
+  slice(1) %>%
+  ungroup() %>%
+  mutate(label.ext = str_remove(str_extract(levels(brackets$label),
+                                 '([:alpha:]*[:blank:])*\\$[:digit:]{2,3}'),
+                                '\\$'))
+  
+bracket.order[16,2] <- 1
+
+bracket.order <- bracket.order %>%
+  mutate(label.ext = as.numeric(label.ext)) %>%
+  arrange(label.ext)
+
+brackets$label <- factor(brackets$label, levels = bracket.order$label)
 
 # draw plot, customize with themes and labels
-ggplot() +
+brackets %>% 
+  filter(label != 'Total') %>%
   
+  # remove data for black people
+  # mutate(percent = case_when(race == 'Black' ~ NA_real_,
+  #                            TRUE ~ percent)) %>%
+  
+  ggplot() +
   geom_col(aes(label, percent, fill = race),
-           position = position_dodge(0.6), alpha = 0.8,
-           data = brackets) +
+           position = position_dodge(0.6), alpha = 0.8) +
   
+  # change scales for bar fills and y axis
   scale_fill_brewer(palette = 'Paired', direction = -1) +
-  
   scale_y_continuous(breaks = seq(0,12,4),
                      labels = paste(seq(0,12,4), '%', sep = '')) +
   theme(axis.text.x = element_text()) +
+  
+  # add labels to axes and title
   labs(title = 'Household Income by Race in the United States',
        subtitle = 'Includes data from all 50 states, plus Washington D.C. and Puerto Rico.',
        caption = 'Source: 2018 American Community Survey',
@@ -110,12 +136,11 @@ ggplot() +
   coord_flip()
 
 # save plot to files
-ggsave('images/household_income.png', height = 5, width = 9, dpi = 'retina', units = 'in')
+ggsave('images/income.png', height = 5, width = 9, dpi = 'retina')
 
 ```
 
 ```{r education_data}
-
 # get education data from 2018 ACS
 education_white <- get_acs_table('C15002A', 'White')
 education_black <- get_acs_table('C15002B', 'Black')
@@ -157,7 +182,9 @@ us_education <- education %>%
 
 # relevel labels to match sequence of educational attainment
 levels(us_education$label) <- levels(us_education$label)[c(1,4,2,3)]
+```
 
+```{r education_plot}
 us_education %>%
   
   # add position column for text labels
@@ -165,6 +192,10 @@ us_education %>%
   arrange(group, desc(label)) %>%
   mutate(position = cumsum(percent) - percent / 2) %>%
   ungroup() %>%
+  
+  # remove data for black people for Whites Only plot
+  # mutate(percent = case_when(race == 'Black' ~ NA_real_,
+  #                            TRUE ~ percent)) %>%
   
   # draw stacked bar plot by group with text labels
   ggplot(aes(group, percent, label, fill = label)) +
@@ -190,5 +221,6 @@ us_education %>%
 # save plot to files
 ggsave('images/education.png', height = 5, width = 9, dpi = 'retina')
 ```
+
 
 
