@@ -16,45 +16,69 @@ library(gganimate)
 theme_set(theme_minimal())
 ```
 
-```{r household_income, message = T}
-# message = F to supress messages from get_acs()
+```{r clean_labels, include = F, eval = F}
+
+# extract variable labels from list of census variables
+census_10 <- load_variables(2010, 'acs5')
+
+black_labels <- census_10 %>% 
+  filter(name %in% income_vars) %>%
+  mutate(label = str_remove(label, pattern = 'Estimate!!Total!!'),
+         order = row_number()) %>%
+  select(-concept)
+
+glimpse(var_labels)
+
+write_csv(clean_labels, 'data/variables_labels.csv')
+```
+
+```{r get_acs_table}
 
 # import variable labels from .csv (cleaned from load_variables() table, in .csv for easy access)
-var_labels <- read_csv('data/variables_labels.csv',
+black_labels <- read_csv('data/variables_labels.csv',
                        col_types = 'cc') %>%
   mutate(order = row_number())
 
-# get income data for blacks by state from 2018 American Community Survey
-acs_income_black <- get_acs(geography = 'state',
-                        table = 'B19001B',
-                        year = 2018,
-                        summary_var = 'B19001B_001',
-                        cache_table = T) %>%
-  
-  # remove 'total' rows, add labels and percentages
-  filter(variable != 'B19001B_001') %>%
-  mutate(percent = estimate / summary_est * 100) %>%
-  left_join(var_labels, by = c('variable' = 'name')) %>%
-  mutate(label = reorder(label, order),
-         race = 'Black')
-
 # change variable names in labels table to match table for white income
-var_labels <- var_labels %>%
+white_labels <- black_labels %>%
   mutate(name = str_replace(name, 'B_', 'A_'))
 
-# get income data for whites by state from 2018 American Community Survey
-acs_income_white <- get_acs(geography = 'state',
-                        table = 'B19001A',
+# a function to change the label names to match new table (ex. from B19001B_002 to C15002B_002)
+repair_labels <- function(tbl, new.id){
+  
+  tbl %>% mutate(name = str_replace(name, '[:alnum:]{7}', new.id))
+}
+
+# a function for grabbing a whole table from 2018 ACS by state
+get_acs_table <- function(tbl.id, race, ...){
+  
+  if(race == 'Black'){
+    var_labels <- repair_labels(black_labels, tbl.id)
+  } else {
+    var_labels <- repair_labels(white_labels, tbl.id)
+  }
+  
+  get_acs(geography = 'state',
+                        table = tbl.id,
                         year = 2018,
-                        summary_var = 'B19001A_001',
+                        summary_var = paste(tbl.id, '001', sep='_'),
                         cache_table = T) %>%
   
   # remove 'total' rows, add labels and percentages
-  filter(variable != 'B19001A_001') %>%
+  filter(variable != paste(tbl.id, '001', sep='_')) %>%
   mutate(percent = estimate / summary_est * 100) %>%
-  left_join(var_labels, by = c('variable' = 'name')) %>%
+  left_join(var_labels,
+            by = c('variable' = 'name')) %>%
   mutate(label = reorder(label, order),
-         race = 'White')
+         race = race)
+}
+```
+
+```{r household_income}
+# message = F to supress messages from get_acs()
+
+acs_income_black <- get_acs_table('B19001B', 'Black')
+acs_income_white <- get_acs_table('B19001A', 'White')
 
 # combine black and white income into single table
 us_income <- acs_income_white %>%
@@ -64,7 +88,7 @@ cali_income <- us_income %>%
   filter(GEOID == '06')
 
 # calculate summary percentages for income levels ( >$75k, <$50k)
-brackets <- us_income %>% 
+us_income %>% 
   mutate(var_ext = as.numeric(str_remove(variable, '[:alnum:]{7}_')),
          inc_level = case_when(var_ext >= 12 ~ '>$75k/yr',
                                var_ext <= 7 ~ '<$35k/yr',
@@ -76,24 +100,30 @@ brackets <- us_income %>%
          total_pop = map_dbl(data, ~ sum(unique(.$summary_est))),
          percent = total_indiv / total_pop * 100) %>%
   select(race, inc_level, percent) %>%
-  .[c(1,3,2,4),]; brackets
+  .[c(1,3,2,4),]
 ```
 
-
 ```{r income_plot, message = T}
+
 # summarize states to produce nationwide numbers
-us_income %>% 
+brackets <- us_income %>% 
   group_by(label,race) %>%
-  summarize(percent = sum(estimate) / sum(summary_est) * 100) %>%
+  summarize(percent = sum(estimate) / sum(summary_est) * 100)
+
+# draw plot, customize with themes and labels
+ggplot() +
   
-  # draw plot, customize with themes and labels
-  ggplot(aes(label, percent, fill = race)) +
-  geom_col(position = position_dodge(0.6), alpha = 0.8) +
+  geom_col(aes(label, percent, fill = race),
+           position = position_dodge(0.6), alpha = 0.8,
+           data = brackets) +
+  
   scale_fill_brewer(palette = 'Paired', direction = -1) +
-  scale_y_continuous(labels = paste(seq(0,12,4), '%', sep = '')) +
-  theme(axis.text.x = element_text(hjust = 1)) +
-  labs(title = 'Household Income by Race in the United States (plus D.C. and Puerto Rico)',
-       subtitle = 'Nationwide, black Americans are more likely to be in lower income brackets than white Americans.\nIn total, more than 52% of white Americans make at least $75,000 a year. Only 33% of black Americans\nhave incomes at least that high. More than 45% of black Americans make less than $35,000 a year,\nbut only about 27% of white Americans fall in this category.',
+  
+  scale_y_continuous(breaks = seq(0,12,4),
+                     labels = paste(seq(0,12,4), '%', sep = '')) +
+  theme(axis.text.x = element_text()) +
+  labs(title = 'Household Income by Race in the United States',
+       subtitle = 'Includes data from all 50 states, plus Washington D.C. and Puerto Rico.',
        caption = 'Source: 2018 American Community Survey',
        fill = 'Race',
        y = 'Percent of Race Group in Income Bracket',
@@ -102,22 +132,19 @@ us_income %>%
   # flip axes to orient bars horizontally
   coord_flip()
 
+# save plot to files
+ggsave('images/household_income.png', height = 5, width = 9, dpi = 'retina', units = 'in')
+
 ```
 
-```{r clean_labels, include = F, eval = F}
+```{r education}
+education_white <- get_acs_table('C15002A', 'White')
+education_black <- get_acs_table('C15002B', 'Black')
 
-# extract variable labels from list of census variables
+education <- full_join(education_white, education_black, by = colnames(education_white))
+rm(education_black, education_white)
 
-# census_10 <- load_variables(2010, 'acs5')
-
-var_labels <- census_10 %>% 
-  filter(name %in% income_vars) %>%
-  mutate(label = str_remove(label, pattern = 'Estimate!!Total!!'),
-         order = row_number()) %>%
-  select(-concept)
-
-glimpse(var_labels)
-
-# write_csv(clean_labels, 'data/variables_labels.csv')
+glimpse(education)
 ```
+
 
