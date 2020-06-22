@@ -126,34 +126,52 @@ education <- full_join(education_white, education_black, by = colnames(education
 # remove obsolete tables
 rm(education_black, education_white)
 
-
-
-# BROKEN!!!!!!
-# add column for sex (since data is split by sex) and further clean labels to show only education level
 education <- education %>%
-  select(-summary_est) %>%
+  
+  # add column for sex and further clean labels to show only education level
   mutate(sex = case_when(str_starts(label, 'Male') ~ 'Male',
                          TRUE ~ 'Female'),
          label = str_remove(label, '[:alpha:]+!{2}')) %>%
-  filter(!label %in% c('Male', 'Female')) %>%
-  group_by(GEOID, sex) %>%
+  
+  # remove incorrect summary_est column and summary rows for each sex and total
+  select(-summary_est) %>%
+  filter(!label %in% c('Male', 'Female', 'Total')) %>%
+  
+  # calculate new summary column by state, sex, and race
+  group_by(GEOID, sex, race) %>%
   nest() %>%
   mutate(summary_est = map_dbl(data, ~ sum(.$estimate))) %>%
   unnest(data)
 
-glimpse(education)
-
 us_education <- education %>%
   group_by(label, race, sex) %>% 
   nest() %>%
-  mutate(percent = map_dbl(data, ~ sum(.$estimate) / sum(.$summary_est) * 100))
-  
+  mutate(percent = map_dbl(data, ~ sum(.$estimate) / sum(.$summary_est) * 100)) %>%
+  ungroup() %>%
+  mutate(group = paste(race, ' ', sex, 's', sep = ''),
+         label = as.factor(label))
+
+levels(us_education$label) <- levels(us_education$label)[c(1,4,2,3)]
+
 us_education %>%
-  filter(race == 'White', sex == 'Male') %>%
-  ungroup() %>% 
-  slice(1) %>%
-  select(label:data, percent.2 = percent) %>%
-  unnest(data)
+  group_by(group) %>%
+  arrange(group, desc(label)) %>%
+  mutate(position = cumsum(percent) - percent / 2) %>%
+  ungroup() %>%
+  ggplot(aes(group, percent, label, fill = label)) +
+  geom_col() +
+  scale_fill_brewer(palette = 'BuGn', direction = -1) +
+  geom_text(aes(label = round(percent, 1), y = position)) +
+  # scale_color_brewer(palette = 'BuPu', direction = 1) +
+  scale_y_continuous(labels = paste(seq(0,100,25), '%', sep = '')) +
+  labs(x = '', y = 'Percentage',
+       title = 'Educational Attainment by Race and Sex, Americans 25 and Older',
+       subtitle = 'Black men and women are both more likely than their white counterparts to not attain post-secondary education.',
+       caption = 'Source: 2018 American Community Survey.\nPercentages are rounded.',
+       fill = 'Highest Educational Attainment') +
+  theme(panel.grid.major.y = element_blank(),
+        panel.grid.minor.x = element_blank()) +
+  coord_flip()
 ```
 
 
