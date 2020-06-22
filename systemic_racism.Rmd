@@ -144,34 +144,51 @@ education <- education %>%
   unnest(data)
 
 us_education <- education %>%
+  
+  # calculate percentages by education level, race, and sex
   group_by(label, race, sex) %>% 
   nest() %>%
   mutate(percent = map_dbl(data, ~ sum(.$estimate) / sum(.$summary_est) * 100)) %>%
   ungroup() %>%
+  
+  # add columns for group (ex. 'White Males'), convert education levels to factor
   mutate(group = paste(race, ' ', sex, 's', sep = ''),
          label = as.factor(label))
 
+# relevel labels to match sequence of educational attainment
 levels(us_education$label) <- levels(us_education$label)[c(1,4,2,3)]
 
 us_education %>%
+  
+  # add position column for text labels
   group_by(group) %>%
   arrange(group, desc(label)) %>%
   mutate(position = cumsum(percent) - percent / 2) %>%
   ungroup() %>%
+  
+  # draw stacked bar plot by group with text labels
   ggplot(aes(group, percent, label, fill = label)) +
   geom_col() +
-  scale_fill_brewer(palette = 'BuGn', direction = -1) +
   geom_text(aes(label = round(percent, 1), y = position)) +
-  # scale_color_brewer(palette = 'BuPu', direction = 1) +
+  
+  # customize plot with new palette, cleaned labels for axes, title, caption
+  scale_fill_brewer(palette = 'BuGn', direction = -1) +
   scale_y_continuous(labels = paste(seq(0,100,25), '%', sep = '')) +
   labs(x = '', y = 'Percentage',
        title = 'Educational Attainment by Race and Sex, Americans 25 and Older',
        subtitle = 'Black men and women are both more likely than their white counterparts to not attain post-secondary education.',
        caption = 'Source: 2018 American Community Survey.\nPercentages are rounded.',
        fill = 'Highest Educational Attainment') +
+  
+  # remove unnecessary lines on axes
   theme(panel.grid.major.y = element_blank(),
         panel.grid.minor.x = element_blank()) +
+  
+  # flip axes for horizontal plot instead of vertical bars
   coord_flip()
+
+# save plot to files
+ggsave('images/education.png', height = 5, width = 9, dpi = 'retina')
 ```
 
 
