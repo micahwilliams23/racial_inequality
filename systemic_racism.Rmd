@@ -16,60 +16,37 @@ library(gganimate)
 theme_set(theme_minimal())
 ```
 
-```{r clean_labels, include = F, eval = F}
-
-# extract variable labels from list of census variables
-census_10 <- load_variables(2010, 'acs5')
-
-black_labels <- census_10 %>% 
-  filter(name %in% income_vars) %>%
-  mutate(label = str_remove(label, pattern = 'Estimate!!Total!!'),
-         order = row_number()) %>%
-  select(-concept)
-
-glimpse(var_labels)
-
-write_csv(clean_labels, 'data/variables_labels.csv')
-```
-
 ```{r get_acs_table}
-
-# import variable labels from .csv (cleaned from load_variables() table, in .csv for easy access)
-black_labels <- read_csv('data/variables_labels.csv',
-                       col_types = 'cc') %>%
-  mutate(order = row_number())
-
-# change variable names in labels table to match table for white income
-white_labels <- black_labels %>%
-  mutate(name = str_replace(name, 'B_', 'A_'))
-
-# a function to change the label names to match new table (ex. from B19001B_002 to C15002B_002)
-repair_labels <- function(tbl, new.id){
+# create table of variable labels
+get_labels <- function(tbl.id){
   
-  tbl %>% mutate(name = str_replace(name, '[:alnum:]{7}', new.id))
+  # load in full list of ACS variable names
+  acs_18 <- load_variables(2018, 'acs5', cache = T)
+  
+  acs_18 %>% 
+    filter(str_starts(name, tbl.id)) %>%
+    mutate(label = str_remove(label, '([:alpha:]+!{2}){0,2}'))
 }
 
 # a function for grabbing a whole table from 2018 ACS by state
-get_acs_table <- function(tbl.id, race, ...){
+get_acs_table <- function(tbl.id, race, year = 2018, ...){
   
-  if(race == 'Black'){
-    var_labels <- repair_labels(black_labels, tbl.id)
-  } else {
-    var_labels <- repair_labels(white_labels, tbl.id)
-  }
+  # get table of labels to join with ACS data
+  var_labels <- get_labels(tbl.id)
   
+  # get data from ACS
   get_acs(geography = 'state',
                         table = tbl.id,
-                        year = 2018,
+                        year = year,
                         summary_var = paste(tbl.id, '001', sep='_'),
                         cache_table = T) %>%
   
   # remove 'total' rows, add labels and percentages
-  filter(variable != paste(tbl.id, '001', sep='_')) %>%
+  # filter(variable != paste(tbl.id, '001', sep='_')) %>%
   mutate(percent = estimate / summary_est * 100) %>%
   left_join(var_labels,
             by = c('variable' = 'name')) %>%
-  mutate(label = reorder(label, order),
+  mutate(label = as.ordered(label),
          race = race)
 }
 ```
@@ -137,14 +114,46 @@ ggsave('images/household_income.png', height = 5, width = 9, dpi = 'retina', uni
 
 ```
 
-```{r education}
+```{r education_data}
+
+# get education data from 2018 ACS
 education_white <- get_acs_table('C15002A', 'White')
 education_black <- get_acs_table('C15002B', 'Black')
 
+# join black and white tables together
 education <- full_join(education_white, education_black, by = colnames(education_white))
+
+# remove obsolete tables
 rm(education_black, education_white)
 
+
+
+# BROKEN!!!!!!
+# add column for sex (since data is split by sex) and further clean labels to show only education level
+education <- education %>%
+  select(-summary_est) %>%
+  mutate(sex = case_when(str_starts(label, 'Male') ~ 'Male',
+                         TRUE ~ 'Female'),
+         label = str_remove(label, '[:alpha:]+!{2}')) %>%
+  filter(!label %in% c('Male', 'Female')) %>%
+  group_by(GEOID, sex) %>%
+  nest() %>%
+  mutate(summary_est = map_dbl(data, ~ sum(.$estimate))) %>%
+  unnest(data)
+
 glimpse(education)
+
+us_education <- education %>%
+  group_by(label, race, sex) %>% 
+  nest() %>%
+  mutate(percent = map_dbl(data, ~ sum(.$estimate) / sum(.$summary_est) * 100))
+  
+us_education %>%
+  filter(race == 'White', sex == 'Male') %>%
+  ungroup() %>% 
+  slice(1) %>%
+  select(label:data, percent.2 = percent) %>%
+  unnest(data)
 ```
 
 
