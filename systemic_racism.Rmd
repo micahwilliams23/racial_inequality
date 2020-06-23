@@ -143,7 +143,7 @@ brackets %>%
   coord_flip()
 
 # save plot to files
-ggsave('images/income.png', height = 5, width = 9, dpi = 'retina')
+# ggsave('images/income.png', height = 5, width = 9, dpi = 'retina')
 
 ```
 
@@ -203,7 +203,7 @@ us_education %>%
   # remove data for black people for Whites Only plot
   # mutate(percent = case_when(race == 'Black' ~ NA_real_,
   #                            TRUE ~ percent)) %>%
-  
+
   # draw stacked bar plot by group with text labels
   ggplot(aes(group, percent, label, fill = label)) +
   geom_col() +
@@ -214,7 +214,13 @@ us_education %>%
   scale_y_continuous(labels = paste(seq(0,100,25), '%', sep = '')) +
   labs(x = '', y = 'Percentage',
        title = 'Educational Attainment by Race and Sex, Americans 25 and Older',
-       subtitle = 'Black men and women are both more likely than their white counterparts to not attain post-secondary education.',
+       
+       # subtitle for white only plot
+       subtitle = 'About 60% of White men and women continue their education beyond secondary school.',
+       
+       # subtitle for plot with both
+       subtitle = 'Black men and women are both less likely than their white counterparts to attain post-secondary education.',
+       
        caption = 'Source: 2018 American Community Survey.\nPercentages are rounded.',
        fill = 'Highest Educational Attainment') +
   
@@ -226,7 +232,7 @@ us_education %>%
   coord_flip()
 
 # save plot to files
-ggsave('images/education.png', height = 5, width = 9, dpi = 'retina')
+# ggsave('images/education.png', height = 5, width = 9, dpi = 'retina')
 ```
 
 ```{r homes, warning = F, message = F}
@@ -335,8 +341,8 @@ homes_plot.white <- function(){
         panel.grid.minor.y = element_line(linetype = 2),
         legend.position = 'none')
   
-  ggsave('images/homes_whiteonly.png', width = 9, height = 5, dpi = 'retina')
 }; homes_plot.white()
+# ggsave('images/homes_whiteonly.png', width = 9, height = 5, dpi = 'retina')
 
 diff.area %>% 
   mutate(diff = NHW - Black) %>% 
