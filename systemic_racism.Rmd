@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       fig.width = 9)
 library(tidycensus)
 library(tidyverse)
-library(gganimate)
+library(readxl)
 
 theme_set(theme_minimal())
 ```
@@ -89,21 +89,28 @@ brackets <- us_income %>%
   summarize(percent = sum(estimate) / sum(summary_est) * 100) %>%
   ungroup()
 
+# create table of income levels and extract leading values (ex. extract '100' from '$100,000')
 bracket.order <- brackets %>%
   select(label) %>%
+  
+  # take one row per bracket
   group_by(label) %>%
   slice(1) %>%
   ungroup() %>%
+  
+  # extract min. value of bracket
   mutate(label.ext = str_remove(str_extract(levels(brackets$label),
                                  '([:alpha:]*[:blank:])*\\$[:digit:]{2,3}'),
                                 '\\$'))
-  
+# replace 'Less than 10' level with 1 for ordering
 bracket.order[16,2] <- 1
 
+# arrange table rows in correct order
 bracket.order <- bracket.order %>%
   mutate(label.ext = as.numeric(label.ext)) %>%
   arrange(label.ext)
 
+# apply correct label order to original table
 brackets$label <- factor(brackets$label, levels = bracket.order$label)
 
 # draw plot, customize with themes and labels
@@ -203,7 +210,7 @@ us_education %>%
   geom_text(aes(label = round(percent, 1), y = position)) +
   
   # customize plot with new palette, cleaned labels for axes, title, caption
-  scale_fill_brewer(palette = 'BuGn', direction = -1) +
+  scale_fill_brewer(palette = 'Blues', direction = -1) +
   scale_y_continuous(labels = paste(seq(0,100,25), '%', sep = '')) +
   labs(x = '', y = 'Percentage',
        title = 'Educational Attainment by Race and Sex, Americans 25 and Older',
@@ -222,5 +229,118 @@ us_education %>%
 ggsave('images/education.png', height = 5, width = 9, dpi = 'retina')
 ```
 
+```{r homes, warning = F, message = F}
+# suppress warnings and messages about columns and rows that are later discarded
+
+# skip empty rows at top of table, set column types, clean column names with janitor
+homes <- read_excel('data/ann19t_22.xlsx', skip = 3, col_types = c('text', rep('numeric',27))) %>%
+  janitor::clean_names() %>%
+  
+  # rename 1996 column to remove 'footnote'1' superscript, remove 2002 column to use revised data
+  select(race = x1, x1996 = x19961, everything(), 
+         -x2002, x2002 = x2002r1) %>%
+  
+  # extract relevant rows
+  slice(4:6) %>%
+  
+  # pivot table to tidy format
+  pivot_longer(., cols = x1996:x2019, 
+               names_to = 'year', values_to = 'percent',
+               names_prefix = 'x') %>%
+  
+  # clean labels for race
+  mutate(race = str_extract(race, '([:alpha:]{5}|[:alpha:]{3}\\-[:alpha:]{8}[:blank:][:alpha:]{5})'),
+         year = as.numeric(year))
+```
+
+```{r homes_plot}
+# create table for annotations
+rl <- tibble(x = c(2004.5, 2004), y = c(78.5,52),
+             race = c('Non-Hispanic White', 'Black'))
+
+# create table from homes data for ribbon between black and white
+diff.area <- homes %>% 
+  select(year, race, percent) %>%
+  filter(race != 'White') %>%
+  mutate(race = if_else(race == 'Black', 'Black', 'NHW')) %>%
+  pivot_wider(names_from = race, values_from = percent)
+
+# plot line graph time series of Blacks and Non-Hispanic Whites
+homes %>%
+  filter(race != 'White') %>%
+  
+  ggplot() +
+  geom_line(aes(year, percent, color = race),
+            size = 1.5) +
+  
+  geom_text(aes(x, y, label = race, color = race), 
+            fontface = 2,
+            data = rl) +
+  geom_ribbon(aes(x = year, ymin = Black, ymax = NHW),
+              fill = rgb(1,0.3,0.2), alpha = 0.1,
+              data = diff.area) +
+  
+  scale_color_brewer(palette = 'Paired', direction = -1) +
+  scale_y_continuous(limits = c(40, 80),
+                     breaks = seq(40,80,10),
+                     labels = paste(seq(40,80,10), '%', sep = '')) +
+  scale_x_continuous(limits = c(1994,2020),
+                     breaks = seq(1995,2020,5),
+                     labels = c('\'95', '2000', paste('\'', c('05', 10, 15, 20), sep = ''))) +
+  
+  labs(y = 'Percentage of Home Ownership',
+       x = 'Year',
+       title = 'Percentage of Home Ownership by Race, 1994-2019',
+       subtitle = 'The disparity in home ownership between Blacks and Non-Hispanic Whites, about 28%,\nhas remained relatively constant over the last 25 years.',
+       caption = 'Source: U.S. Census Bureau, Current Population Survey/Housing Vacancy Survey, March 10, 2020.') +
+  
+  theme(panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_line(linetype = 2),
+        legend.position = 'none')
+
+ggsave('images/homes.png', width = 9, height = 5, dpi = 'retina')
+
+# plot for whites-only plot (similar code to above)
+homes_plot.white <- function(){
+  
+  rl <- tibble(x = c(2004.5), y = c(78.5),
+             race = c('Non-Hispanic White'))
+  homes %>%
+  filter(race == 'Non-Hispanic White') %>%
+  
+  ggplot() +
+  geom_line(aes(year, percent, color = race),
+            size = 1.5) +
+  
+  geom_text(aes(x, y, label = race, color = race), 
+            fontface = 2,
+            data = rl) +
+  
+  scale_color_brewer(palette = 'Paired', direction = -1) +
+  scale_y_continuous(limits = c(40, 80),
+                     breaks = seq(40,80,10),
+                     labels = paste(seq(40,80,10), '%', sep = '')) +
+  scale_x_continuous(limits = c(1994,2020),
+                     breaks = seq(1995,2020,5),
+                     labels = c('\'95', '2000', paste('\'', c('05', 10, 15, 20), sep = ''))) +
+  
+  labs(y = 'Percentage of Home Ownership',
+       x = 'Year',
+       title = 'Percentage of Home Ownership by Race, 1994-2019',
+       subtitle = 'Home ownership among Non-Hispanic Whites over the last 25 years has averaged 73.1%,\npeaking in 2004 at 76%, but trending up since 2016.',
+       color = '',
+       caption = 'Source: U.S. Census Bureau, Current Population Survey/Housing Vacancy Survey, March 10, 2020.') +
+  
+  theme(panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_line(linetype = 2),
+        legend.position = 'none')
+  
+  ggsave('images/homes_whiteonly.png', width = 9, height = 5, dpi = 'retina')
+}; homes_plot.white()
+
+diff.area %>% 
+  mutate(diff = NHW - Black) %>% 
+  summarize(mean = mean(diff), min = min(diff), max = max(diff))
+```
 
 
