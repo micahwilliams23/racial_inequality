@@ -333,7 +333,7 @@ homes_plot.white <- function(){
   labs(y = 'Percentage of Home Ownership',
        x = 'Year',
        title = 'Percentage of Home Ownership by Race, 1994-2019',
-       subtitle = 'Home ownership among Non-Hispanic Whites over the last 25 years has averaged 73.1%,\npeaking in 2004 at 76%, but trending up since 2016.',
+       subtitle = 'Home ownership among Non-Hispanic Whites over the last 25 years has averaged 73%.\nHome ownership peaked in 2004 at 76%, but has been trending up since 2016.',
        color = '',
        caption = 'Source: U.S. Census Bureau, Current Population Survey/Housing Vacancy Survey, March 10, 2020.') +
   
