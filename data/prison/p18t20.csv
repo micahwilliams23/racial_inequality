@@ -1,0 +1,41 @@
+Bureau of Justice Statistics,,,,,,,,,,,
+Filename: p18t20.csv,,,,,,,,,,,
+"Table 20. Percent of prisoners under jurisdiction of military correctional authority with any sentence length, by most serious offense and branch of service, December 31, 2018",,,,,,,,,,,
+Report title: Prisoners in 2018   NCJ 253516,,,,,,,,,,,
+"Data Source: Bureau of Justice Statistics, based on data from the Office of the Under Secretary of Defense for Personnel and Readiness, U.S. Department of Defense, 2018",,,,,,,,,,,
+"Author: E. Ann Carson, Ph.D., BJS Statistician",,,,,,,,,,,
+Refer questions to: askbjs@usdoj.gov   202-307-0765,,,,,,,,,,,
+Date of version: 4/30/2020,,,,,,,,,,,
+,,,,,,,,,,,
+"Table 20. Percent of prisoners under jurisdiction of military correctional authority with any sentence length, by most serious offense and branch of service, December 31, 2018",,,,,,,,,,,
+Most serious offense,,Total/a,,U.S. Air Force,,U.S. Army,,U.S. Marine Corps,,U.S. Navy,
+,Total,100,%,100,%,100,%,100,%,100,%
+Violent offenses,,63.6,%,57.4,%,70.9,%,61.3,%,51,%
+Non-violent offenses,,36.4,%,42.6,%,29.1,%,38.7,%,49,%
+,Total,100,%,100,%,100,%,100,%,100,%
+Sexual,,71,%,75.8,%,71.4,%,61.8,%,75.2,%
+,Violent,48.8,,46.2,,52.7,,45.8,,42.8,
+,Non-violent/b,22.2,,29.6,,18.7,,16,,32.4,
+Other violent,,14.9,%,11.2,%,18.1,%,15.6,%,8.3,%
+,Murder/c,6.9,,7.6,,8.6,,3.8,,4.1,
+,Negligent manslaughter,0.4,,0.4,,0.2,,0.5,,0.7,
+,Robbery,0.1,,0,,0.2,,0,,0,
+,Aggravated/simple assault,6.3,,3.1,,7.3,,9.9,,2.8,
+,Other,1.2,,0,,1.8,,1.4,,0.7,
+Property,,3.9,%,2.2,%,3.5,%,8.5,%,1.4,%
+,Burglary,0.6,,0,,0.5,,1.9,,0,
+,Larceny/theft,2.5,,1.8,,2.6,,4.7,,0.7,
+,Motor-vehicle theft,0.1,,0,,0,,0.5,,0,
+,Fraud,0.3,,0.4,,0.4,,0,,0,
+,Other,0.4,,0,,0,,1.4,,0.7,
+Drug/d,,6,%,7.2,%,3.1,%,9.9,%,8.3,%
+Public order,,0.5,%,0.4,%,0.7,%,0.5,%,0,%
+Military,,2.5,%,1.3,%,1.6,%,3.8,%,5.5,%
+Other/unspecified,,1.2,%,1.8,%,1.5,%,0,%,1.4,%
+,Total number of prisoners,"1,138",223,,,546,,212,,145,
+Note: Counts and percentages are based on prisoners sentenced to any length of time under military correctional authority. Excludes pre-trial detainees. U.S. Coast Guard offense distribution is not shown due to too few cases. Details may not sum to totals due to rounding.,,,,,,,,,,,
+a/Includes prisoners who served in the U.S. Coast Guard.,,,,,,,,,,,
+"b/Includes sexual harassment, indecent exposure, prostitution, stalking, and other non-violent sexual offenses.",,,,,,,,,,,
+c/Includes non-negligent manslaughter.,,,,,,,,,,,
+"d/Includes possession, use, trafficking, and other drug offenses.",,,,,,,,,,,
+"Source: Bureau of Justice Statistics, based on data from the Office of the Under Secretary of Defense for Personnel and Readiness, U.S. Department of Defense, 2018.",,,,,,,,,,,

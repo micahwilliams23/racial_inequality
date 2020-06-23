@@ -1,0 +1,88 @@
+Bureau of Justice Statistics,,,,,,,,,,,,,,
+Filename: p18t08.csv,,,,,,,,,,,,,,
+"Table 8. Admissions and releases of sentenced prisoners under jurisdiction of state or federal correctional authorities, 2017 and 2018",,,,,,,,,,,,,,
+Report title: Prisoners in 2018   NCJ 253516,,,,,,,,,,,,,,
+"Data Source: Bureau of Justice Statistics, National Prisoner Statistics, 2017 and 2018",,,,,,,,,,,,,,
+"Author: E. Ann Carson, Ph.D., BJS Statistician",,,,,,,,,,,,,,
+Refer questions to: askbjs@usdoj.gov   202-307-0765,,,,,,,,,,,,,,
+Date of version: 4/30/2020,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+"Table 8. Admissions and releases of sentenced prisoners under jurisdiction of state or federal correctional authorities, 2017 and 2018",,,,,,,,,,,,,,
+,,Admissions/a,,,,,,,Releases/b,,,,,
+State/federal,,2017 total,2018 total,"Percent change, 2017-2018",,2018 new court commitments,2018 conditional supervision violations/c,,2017 total,2018 total,"Percent change, 2017-2018",,2018 unconditional/d,2018 conditional/e
+,U.S. total/g,"606,596","596,389",-1.7,%,"410,867","169,663",,"623,069","614,844",-1.3,%,"157,000","443,342"
+Federal/lf,,"44,708","44,514",0,%,"39,943","4,571",,"49,461","47,208",-5,%,"46,440",270
+State/g,,"561,888","551,875",-2,%,"370,924","165,092",,"573,608","567,636",-1,%,"110,560","443,072"
+,Alabama,"12,170","13,160",8.1,,"8,141","1,839",,"13,624","14,015",2.9,,"2,973","9,192"
+,Alaska/h,"1,580","1,765",11.7,,"1,561",204,,"1,941","1,735",-10.6,,312,"1,418"
+,Arizona,"13,423","13,753",2.5,,"11,339","2,340",,"14,075","13,683",-2.8,,"2,132","11,422"
+,Arkansas,"8,971","9,572",6.7,,"5,209","4,363",,"8,443","9,805",16.1,,792,"8,933"
+,California,"37,091","35,330",-4.7,,"30,957","4,373",,"36,894","34,461",-6.6,,57,"33,854"
+,Colorado,"9,638","10,155",5.4,,"6,349","3,806",,"9,669","9,774",1.1,,"1,106","8,512"
+,Connecticut/h,"4,401","4,162",-5.4,,"3,441",577,,"5,169","4,843",-6.3,,"2,263","2,559"
+,"Delaware/h,i","2,897","2,505",-13.5,,"1,832",655,,"2,736","2,504",-8.5,,248,"2,112"
+,Florida/j,"28,189","28,495",1.1,,"27,687",77,,"30,467","30,132",-1.1,,"18,423","11,245"
+,Georgia,"16,699","17,736",6.2,,"15,574","2,155",,"15,210","16,348",7.5,,"7,649","8,520"
+,Hawaii/h,"1,528","1,784",16.8,,"1,081",703,,"1,834","1,816",-1,,345,713
+,Idaho,"5,747","5,003",-12.9,,"1,746","3,257",,"5,395","5,444",0.9,,445,"4,977"
+,Illinois,"24,468","22,835",-6.7,,"14,459","8,373",,"26,850","24,415",-9.1,,"4,129","20,197"
+,Indiana,"12,249","12,005",-2,,"9,250","2,640",,"11,708","11,075",-5.4,,"1,001","10,007"
+,Iowa,"5,619","5,342",-4.9,,"3,685","1,635",,"5,632","5,434",-3.5,,"1,151","4,232"
+,Kansas,"6,453","6,506",0.8,,"3,934","1,390",,"6,406","6,411",0.1,,"1,587","4,791"
+,Kentucky,"21,239","20,152",-5.1,,"12,379","7,605",,"20,555","20,014",-2.6,,"4,600","15,032"
+,Louisiana,"16,337","15,646",-4.2,,"10,345","5,301",,"17,868","16,759",-6.2,,"1,482","15,145"
+,Maine/k,960,892,:,,466,426,,684,757,:,,362,395
+,Maryland/l,"8,243","7,661",-7.1,,"5,727","1,925",,"8,850","8,141",-8,,"2,512","5,561"
+,Massachusetts,"2,141","1,983",-7.4,,"1,775",205,,"2,309","2,316",0.3,,"1,663",613
+,Michigan,"12,013","11,307",-5.9,,"6,608","2,581",,"13,470","12,212",-9.3,,510,"9,699"
+,Minnesota,"8,195","7,317",-10.7,,"4,345","2,972",,"8,092","7,838",-3.1,,810,"6,997"
+,Mississippi,"7,553","7,439",-1.5,,"5,267","2,172",,"7,748","7,502",-3.2,,450,"6,712"
+,Missouri,"18,551","17,299",-6.7,,"9,078","8,219",,"18,431","19,493",5.8,,"1,366","17,997"
+,Montana,"2,644","2,772",4.8,,"1,870",902,,"2,770","2,841",2.6,,567,"2,259"
+,Nebraska,"2,436","2,385",-2.1,,"1,924",440,,"2,387","2,239",-6.2,,471,"1,756"
+,Nevada/m,"5,873","6,334",7.8,,"4,829","1,094",,"6,549","6,434",-1.8,,"2,049","4,339"
+,New Hampshire/n,"1,338","1,309",:,,626,683,,"1,409","1,335",:,,128,"1,207"
+,New Jersey,"8,611","7,808",-9.3,,"5,595","2,213",,"8,959","8,159",-8.9,,"4,681","3,284"
+,"New Mexico/o,p","3,848","3,585",:,,"2,133","1,207",,"3,631","3,598",:,,938,"2,397"
+,New York,"20,421","18,954",-7.2,,"11,429","7,452",,"21,667","21,691",0.1,,"2,072","19,270"
+,North Carolina,"18,242","17,251",-5.4,,"12,614","4,636",,"17,244","18,111",5,,"2,556","15,442"
+,North Dakota/q,"1,570","1,527",:,,/,/,,"1,627","1,555",:,,/,/
+,Ohio/p,"21,602","20,727",-4.1,,"15,456","4,701",,"22,299","21,774",-2.4,,"8,221","13,398"
+,Oklahoma,"10,228","9,318",-8.9,,"7,176","2,092",,"9,682","9,111",-5.9,,"2,137","6,862"
+,Oregon/n,"5,566","5,580",:,,"3,716","1,722",,"5,428","5,529",:,,34,"5,285"
+,Pennsylvania,"19,297","17,954",-7,,"8,526","8,551",,"19,673","18,550",-5.7,,"3,159","15,199"
+,Rhode Island/h,572,613,7.2,,486,127,,875,768,-12.2,,512,252
+,South Carolina,"6,017","5,769",-4.1,,"4,662","1,099",,"6,847","6,598",-3.6,,"1,780","4,714"
+,South Dakota,"3,896","4,116",5.6,,"1,481",631,,"3,859","4,298",11.4,,286,"2,787"
+,Tennessee,"11,541","12,726",10.3,,"7,775","4,951",,"13,307","13,718",3.1,,"5,249","8,348"
+,Texas,"76,877","78,741",2.4,,"48,695","26,640",,"77,196","77,714",0.7,,"10,008","65,069"
+,Utah,"4,047","3,733",-7.8,,"1,777","1,956",,"3,781","3,514",-7.1,,614,"2,882"
+,"Vermont/h,r","1,737","2,469",42.1,,876,"1,593",,"1,795","2,476",37.9,,396,"2,070"
+,Virginia/s,"12,163","11,657",-4.2,,"11,616",41,,"12,698","12,862",1.3,,"1,070","11,669"
+,Washington/p,"25,483","24,829",-2.6,,"6,224","18,602",,"25,658","26,861",4.7,,"2,335","24,480"
+,West Virginia,"3,590","3,831",6.7,,"2,316","1,281",,"3,652","4,148",13.6,,910,"2,977"
+,Wisconsin,"6,865","7,021",2.3,,"4,555","2,428",,"5,592","5,836",4.4,,270,"5,502"
+,Wyoming,"1,069","1,062",-0.7,,805,257,,963,989,2.7,,194,789
+"Note: Jurisdiction refers to the legal authority of state or federal correctional officials over a prisoner, regardless of where the prisoner is held. For jurisdiction-level information, see Jurisdiction notes on the BJS website. Counts cover January 1 through December 31 for each year and are based on prisoners admitted to or released from state or federal correctional authorities with a sentence of more than one year. As of December 31, 2001, sentenced felons from the District of Columbia were the responsibility of the Federal Bureau of Prisons.",,,,,,,,,,,,,,
+:Not calculated. Counts and rates for 2017 and 2018 are not comparable.,,,,,,,,,,,,,,
+/Not reported.,,,,,,,,,,,,,,
+"a/Excludes transfers, escapes, and absences without leave. Includes other conditional-release violators, returns from appeal or bond, and other admissions. In 2018, 15,859 (2.7%) of total admissions were due to other conditional-release violations, returns from appeal or bond, and other types of admissions not included among new court commitments or conditional-supervision violations. See Methodology.",,,,,,,,,,,,,,
+"b/Excludes transfers, escapes, and absences without leave. Includes deaths, releases to appeal or bond, and other releases. In 2018, 14,502 (2.4%) of total releases were due to death, releases to appeal or bond, releases to treatment facilities, and other types of releases not included among unconditional or conditional releases. See Methodology.",,,,,,,,,,,,,,
+"c/Includes all conditional-release violators returned to prison from post-custody community supervision, including parole and probation, either for violations of conditions of release or for new crimes.",,,,,,,,,,,,,,
+"d/Includes expirations of sentence, commutations, and other unconditional releases.",,,,,,,,,,,,,,
+"e/Includes releases to probation, supervised mandatory releases, and other unspecified conditional releases.",,,,,,,,,,,,,,
+"f/Includes adult prisoners held in non-secure community-corrections facilities and adults and persons age 17 or younger held in privately operated facilities. The 270 conditional releases from federal correctional facilities are persons who were sentenced before the 1984 Sentencing Reform Act, which eliminated federal parole.",,,,,,,,,,,,,,
+"g/U.S. total and state estimates for 2017 include imputed counts for New Mexico, North Dakota, and Vermont, which did not submit 2017 National Prisoner Statistics (NPS) data on admissions and releases. U.S. total and state estimates for 2018 include imputed counts for New Hampshire, Oregon, and Vermont, which did not submit 2018 NPS data on admissions or releases. See Methodology in this report and in Prisoners in 2017 (NCJ 252156, BJS, April 2019).",,,,,,,,,,,,,,
+h/Prisons and jails form one integrated system. Data include total jail and prison populations.,,,,,,,,,,,,,,
+i/Releases include offenders who received a combined sentence of prison and probation of more than one year.,,,,,,,,,,,,,,
+j/Florida does not report prison admissions for technical violations. All admissions represent new sentences. The 77 admissions due to supervision violations represent persons who committed new crimes while on post-custody community supervision.,,,,,,,,,,,,,,
+"k/Due to errors in an undetermined number of admission and release records, Maine’s counts of admissions and releases for 2018 should be regarded as preliminary.",,,,,,,,,,,,,,
+"l/Due to implementation concerns with a new information system, Maryland’s counts of admissions and releases for 2017 and 2018 are estimates.",,,,,,,,,,,,,,
+"m/Admissions include local jail inmates admitted to the Nevada Department of Corrections due to medical, behavioral, protective, or local staffing issues and persons ordered by judges to serve 6 months or less in prison prior to actual sentencing for felonies.",,,,,,,,,,,,,,
+n/State did not submit 2018 NPS data on admissions or releases. Total and detailed types of admissions and releases were imputed. Estimates of admissions and releases in 2018 are not comparable to data for previous years. See Methodology and Jurisdiction notes on the BJS website.,,,,,,,,,,,,,,
+o/State did not submit 2017 NPS data on admissions and releases. Total and detailed types of admissions and releases were imputed and included in U.S. and state totals. See Methodology and Jurisdiction notes on the BJS website.,,,,,,,,,,,,,,
+"p/Includes all admissions and releases from state prison, regardless of sentence length. See Jurisdiction notes on the BJS website.",,,,,,,,,,,,,,
+q/State did not report 2017 NPS data on admissions or releases and reported only the total number of admissions and releases in 2018 without detail.,,,,,,,,,,,,,,
+"r/State did not submit 2017 or 2018 NPS data on admissions or releases. Total and detailed types of admissions and releases were imputed and included in U.S. and state totals. See Methodology in this report and in Prisoners in 2017 (NCJ 252156, BJS, April 2019), as well as 2017 and 2018 Jurisdiction notes on the BJS website.",,,,,,,,,,,,,,
+s/Admission and release data are based on fiscal year and are preliminary.,,,,,,,,,,,,,,
+"Source: Bureau of Justice Statistics, National Prisoner Statistics, 2017 and 2018.",,,,,,,,,,,,,,

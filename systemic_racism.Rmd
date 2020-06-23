@@ -349,4 +349,21 @@ diff.area %>%
   summarize(mean = mean(diff), min = min(diff), max = max(diff))
 ```
 
+```{r prison, message = F, warning = F}
+
+# load in data, skipping non-data rows and removing empty columns
+# note: data is X per 100,000 people
+prison <- read_csv('data/prison/p18t06.csv', skip = 11) %>%
+  select(-starts_with('X')) %>%
+  janitor::clean_names() %>%
+  
+  # change year to numeric, remove old year column
+  mutate(year = as.numeric(year_a)) %>%
+  select(year, everything(), -year_a)
+
+# remove extra bits from column names
+colnames(prison) <- str_remove(colnames(prison), '_[:alpha:]')
+
+glimpse(prison)
+```
 

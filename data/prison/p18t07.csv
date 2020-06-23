@@ -1,0 +1,77 @@
+Bureau of Justice Statistics,,,,,,,,,,,,
+Filename: p18t07.csv,,,,,,,,,,,,
+"Table 7. Imprisonment rates of U.S. residents, based on sentenced prisoners under jurisdiction of state or federal correctional authorities, by jurisdiction, sex, and age, 2017 and 2018",,,,,,,,,,,,
+Report title: Prisoners in 2018   NCJ 253516,,,,,,,,,,,,
+"Data Source: Bureau of Justice Statistics, National Prisoner Statistics, 2017 and 2018; and U.S. Census Bureau, post-censal resident population estimates for January 1 of the following calendar year",,,,,,,,,,,,
+"Author: E. Ann Carson, Ph.D., BJS Statistician",,,,,,,,,,,,
+Refer questions to: askbjs@usdoj.gov   202-307-0765,,,,,,,,,,,,
+Date of version: 4/30/2020,,,,,,,,,,,,
+,,,,,,,,,,,,
+"Table 7. Imprisonment rates of U.S. residents, based on sentenced prisoners under jurisdiction of state or federal correctional authorities, by jurisdiction, sex, and age, 2017 and 2018",,,,,,,,,,,,
+,,"Per 100,000 U.S. residents in a given category in 2017",,,,,,"Per 100,000 U.S. residents in a given category in 2018",,,,
+,,All ages,,,,,,All ages,,,,
+State/federal,,Total,Male,Female,,Age 18 or older,,Total,Male,Female,,Age 18 or older
+,U.S. total/a,441,831,63,,570,,431,810,63,,555
+Federal/b,,51,96,7,,66,,50,94,7,,64
+State/a,,390,734,57,,504,,381,716,56,,491
+,Alabama,486,930,70,,626,,418,807,54,,538
+,Alaska/c,258,474,22,,344,,263,482,25,,350
+,Arizona,566,"1,034",104,,736,,559,"1,017",106,,723
+,Arkansas,599,"1,124",92,,782,,589,"1,106",91,,768
+,California,329,632,29,,426,,321,618,29,,415
+,Colorado/d,350,629,68,,451,,353,631,71,,453
+,Connecticut/c,269,524,26,,340,,252,489,26,,317
+,Delaware/c,422,834,37,,536,,410,807,38,,518
+,Florida,466,888,62,,582,,454,866,61,,566
+,Georgia,507,969,70,,667,,501,956,71,,657
+,Hawaii/c,241,443,38,,306,,230,417,42,,292
+,Idaho,446,777,114,,600,,444,763,123,,594
+,Illinois,325,624,35,,419,,314,601,36,,404
+,Indiana,389,716,71,,509,,400,734,75,,522
+,Iowa,286,523,51,,372,,297,544,53,,386
+,Kansas/e,334,613,58,,442,,342,626,59,,451
+,Kentucky,528,933,133,,682,,523,924,134,,675
+,Louisiana,722,"1,393",82,,946,,695,"1,348",73,,908
+,Maine,134,251,22,,165,,135,251,24,,166
+,Maryland,319,629,27,,410,,310,611,26,,398
+,Massachusetts,151,300,11,,189,,145,288,10,,181
+,Michigan,397,763,42,,508,,387,744,41,,494
+,Minnesota,192,358,26,,250,,179,335,25,,233
+,Mississippi,618,"1,186",84,,811,,626,"1,204",82,,818
+,Missouri,533,972,109,,688,,495,905,100,,638
+,Montana/f,350,616,79,,446,,353,618,84,,450
+,Nebraska,273,504,44,,363,,280,517,43,,371
+,Nevada/e,457,826,85,,592,,445,803,84,,575
+,New Hampshire/g,203,376,33,,251,,202,374,33,,249
+,New Jersey,220,433,17,,282,,217,427,17,,278
+,New Mexico/h,343,619,73,,447,,331,596,71,,429
+,New York,252,496,22,,319,,239,469,21,,301
+,North Carolina,342,650,50,,440,,324,617,47,,416
+,North Dakota/h,226,390,53,,295,,221,382,52,,289
+,Ohio,441,822,74,,567,,431,804,72,,553
+,Oklahoma,704,"1,262",157,,931,,693,"1,242",155,,914
+,Oregon/g,365,671,63,,461,,362,671,58,,457
+,Pennsylvania,376,722,43,,474,,366,702,44,,462
+,Rhode Island/c,171,338,13,,212,,158,313,11,,196
+,South Carolina,387,744,50,,495,,366,703,48,,467
+,South Dakota,451,772,123,,599,,444,753,130,,590
+,Tennessee,430,790,87,,554,,387,712,77,,497
+,Texas,553,"1,022",89,,746,,549,"1,013",91,,738
+,"Utah/e,i",205,375,32,,291,,208,377,36,,294
+,Vermont/c,180,331,33,,221,,187,348,30,,229
+,Virginia,438,814,73,,561,,429,800,70,,549
+,Washington,261,476,46,,336,,256,466,45,,328
+,West Virginia,391,699,89,,491,,376,671,87,,471
+,Wisconsin,391,733,53,,501,,391,734,51,,501
+,Wyoming,428,739,103,,559,,441,750,119,,574
+"Note: Jurisdiction refers to the legal authority of state or federal correctional officials over a prisoner, regardless of where the prisoner is held. For jurisdiction-level information, see Jurisdiction notes on the BJS website. Imprisonment rate is the number of prisoners under state or federal jurisdiction with a sentence of more than one year per 100,000 U.S. residents, or per 100,000 U.S. residents in a given category. Resident population estimates are from the U.S. Census Bureau for January 1, 2019. Rates are for December 31 of each year and are based on prisoners with a sentence of more than one year. As of December 31, 2001, sentenced felons from the District of Columbia were the responsibility of the Federal Bureau of Prisons.",,,,,,,,,,,,
+"a/Total and state estimates for 2017 include imputed counts for New Mexico and North Dakota, which did not submit 2017 National Prisoner Statistics (NPS) data. Total and state estimates for 2018 include imputed counts for New Hampshire and Oregon, which did not submit 2018 NPS data. See Methodology in this report and in Prisoners in 2017 (NCJ 252156, BJS, April 2019).",,,,,,,,,,,,
+b/Includes adult prisoners held in non-secure community-corrections facilities and adults and persons age 17 or younger held in privately operated facilities.,,,,,,,,,,,,
+c/Prisons and jails form one integrated system. Data include total jail and prison populations.,,,,,,,,,,,,
+d/Includes a small number of prisoners sentenced to one year or less.,,,,,,,,,,,,
+e/State submitted updated 2017 prisoner counts.,,,,,,,,,,,,
+f/State converted offender data to a new system in 2018. Data from 2018 are not comparable to data for previous years.,,,,,,,,,,,,
+g/State did not submit 2018 NPS data. Counts were imputed for 2018 and should not be compared to 2017 counts. See Methodology.,,,,,,,,,,,,
+"h/State did not submit 2017 NPS data. Counts were imputed for 2017 and should not be compared to 2018 counts. See Methodology in Prisoners in 2017 (NCJ 252156, BJS, April 2019).",,,,,,,,,,,,
+i/Data for 2018 are not comparable to data for previous years. Total counts of the prisoner population from 2018 include an undetermined number of offenders excluded from counts in 2017 due to a change in legal-status requirements for a program for parole violators that was instituted in 2018.,,,,,,,,,,,,
+"Source: Bureau of Justice Statistics, National Prisoner Statistics, 2017 and 2018; and U.S. Census Bureau, post-censal resident population estimates for January 1 of the following calendar year.",,,,,,,,,,,,

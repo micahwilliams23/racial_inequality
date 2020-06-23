@@ -1,0 +1,40 @@
+Bureau of Justice Statistics,,,,,,,
+Filename: p18t16.csv,,,,,,,
+"Table 16. Number of sentenced prisoners held in publicly or privately operated federal correctional facilities, by most serious offense, sex, and race or ethnicity, September 30, 2018",,,,,,,
+Report title: Prisoners in 2018   NCJ 253516,,,,,,,
+"Data Source: Bureau of Justice Statistics, Federal Justice Statistics Program, 2018 (preliminary)",,,,,,,
+"Author: E. Ann Carson, Ph.D., BJS Statistician",,,,,,,
+Refer questions to: askbjs@usdoj.gov   202-307-0765,,,,,,,
+Date of version: 4/30/2020,,,,,,,
+,,,,,,,
+"Table 16. Number of sentenced prisoners held in publicly or privately operated federal correctional facilities, by most serious offense, sex, and race or ethnicity, September 30, 2018",,,,,,,
+Most serious offense,,All prisoners/a,Male,Female,"White/b,c","Black/b,c",Hispanic/c
+,Total/d,"162,904","151,900","11,000","46,100","60,500","50,800"
+Violent,,"12,800","12,200",500,"3,100","6,200","1,300"
+,Homicide/e,"2,700","2,600",200,300,"1,600",200
+,Robbery,"6,000","5,800",200,"2,000","3,400",500
+,Sexual abuse,"1,300","1,300",0,300,300,100
+,Other,"2,700","2,600",200,500,"1,100",500
+Property,,"9,200","7,500","1,800","3,700","3,600","1,500"
+,Burglary,300,300,0,0,200,0
+,Fraud/f,"7,300","5,800","1,500","2,900","2,800","1,200"
+,Other/g,"1,700","1,400",300,700,600,200
+Drug/h,,"76,700","70,300","6,400","17,400","27,400","30,300"
+Public order,,"63,600","61,200","2,300","21,500","23,000","17,500"
+,Immigration/i,"9,200","8,900",300,200,200,"8,800"
+,Weapons,"28,800","28,300",500,"6,600","17,000","4,600"
+,Other/j,"25,600","24,100","1,500","14,700","5,900","4,200"
+Other/unspecified/k,,600,600,0,300,200,100
+"Note: Counts are based on prisoners who were convicted, sentenced to one year or more, and in the custody of publicly or privately operated federal correctional facilities on September 30, 2018. Details may not sum to totals due to rounding. See Methodology. As of December 31, 2001, sentenced felons from the District of Columbia were the responsibility of the Federal Bureau of Prisons.",,,,,,,
+"a/Also includes Asians, Native Hawaiians, Other Pacific Islanders, American Indians, Alaska Natives, and persons of two or more races.",,,,,,,
+"b/Excludes persons of Hispanic origin (e.g., “white” refers to non-Hispanic whites and “black” refers to non-Hispanic blacks). See Methodology.",,,,,,,
+c/Data on race or ethnicity are not adjusted to self-reported data.,,,,,,,
+d/Totals for race or ethnicity are rounded to the nearest 100 to accommodate differences in data-collection techniques between jurisdictions. ,,,,,,,
+e/Includes murder and both negligent and non-negligent manslaughter.,,,,,,,
+"f/Includes embezzlement, fraud, forgery, and counterfeiting.",,,,,,,
+"g/Includes larceny, motor-vehicle theft, arson and explosives, transportation of stolen property, and other property offenses.",,,,,,,
+"h/Includes trafficking, possession, and other drug offenses. More than 99% of federal drug offenders were sentenced for trafficking.",,,,,,,
+"i/Includes illegal entry, smuggling and importing non-U.S. citizens, and holds for immigration officials.",,,,,,,
+"j/Includes regulatory offenses; tax-law violations; bribery; perjury, contempt, and intimidation in U.S. courts; national-defense offenses; escape; racketeering and extortion; gambling; sexual offenses, excluding sexual abuse; offenses involving liquor, traffic, wildlife, and environmental matters; and all other public-order offenses.",,,,,,,
+k/Includes offenses not classified.,,,,,,,
+"Source: Bureau of Justice Statistics, Federal Justice Statistics Program, 2018 (preliminary).",,,,,,,
