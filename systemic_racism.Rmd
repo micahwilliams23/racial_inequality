@@ -392,8 +392,8 @@ prison.race %>%
             fontface = 2,
             data = prison.labels) +
   
-  labs(title = 'Incarceration Rates by Race, 2008-2018',
-       subtitle = 'While the difference in incarceration rates has narrowed in recent years, in 2018\nblack Americans were incarcerated at 5.7 times the rate of white Americans.', 
+  labs(title = 'U.S. Incarceration Rates by Race, 2008-2018',
+       subtitle = 'While the difference in incarceration rates has narrowed in recent years, in 2018\nblack Americans were incarcerated at nearly 6 times the rate of white Americans.', 
        x = 'Year', y = 'Incarceration Rate\n(per 100,000)',
        caption = 'Source: Bureau of Justice Statistics, Federal Justice Statistics Program, U.S. Census Bureau',
        color = 'Race') +
@@ -404,8 +404,11 @@ prison.race %>%
   scale_y_continuous(limits = c(0,2250)) +
   scale_color_brewer(palette='Paired', direction = -1) + 
   
+  # theme_classic() +
   theme(panel.grid.minor.x = element_blank(),
         legend.position = 'none')
+
+# ggsave('images/prison.png', width = 9, height = 5, dpi = 'retina')
 
 # create table showing rate of Black Incarceration as multiple of White rate
 prison.ribbon %>% mutate(rate.multiple = black / white)
