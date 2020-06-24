@@ -14,6 +14,7 @@ library(tidyverse)
 library(readxl)
 
 theme_set(theme_minimal())
+ribbon.fill = rgb(1,0.3,0.2,0.1)
 ```
 
 ```{r get_acs_table}
@@ -283,7 +284,7 @@ homes %>%
             fontface = 2,
             data = rl) +
   geom_ribbon(aes(x = year, ymin = Black, ymax = NHW),
-              fill = rgb(1,0.3,0.2), alpha = 0.1,
+              fill = ribbon.fill,
               data = diff.area) +
   
   scale_color_brewer(palette = 'Paired', direction = -1) +
@@ -356,14 +357,57 @@ diff.area %>%
 prison <- read_csv('data/prison/p18t06.csv', skip = 11) %>%
   select(-starts_with('X')) %>%
   janitor::clean_names() %>%
+  slice(1:11) %>%
   
   # change year to numeric, remove old year column
   mutate(year = as.numeric(year_a)) %>%
   select(year, everything(), -year_a)
 
+
 # remove extra bits from column names
 colnames(prison) <- str_remove(colnames(prison), '_[:alpha:]')
 
-glimpse(prison)
+prison.race <- prison %>%
+  
+  # select relevant columns
+  select(year, white, black) %>%
+  
+  # convert table to tidy format (race column, rate column)
+  pivot_longer(cols = c(white, black), names_to = 'race', values_to = 'rate')
+
+prison.ribbon <- prison %>% select(year, black, white)
+prison.labels <- tibble(x = c(2013),
+                        y = c(1950,150),
+                        labels = c('black', 'white'))
+
+prison.race %>%
+  
+  ggplot() +
+  geom_line(aes(year, rate, color = race),
+            size = 1.5) +
+  geom_ribbon(aes(year, ymin = white, ymax = black),
+              fill = ribbon.fill,
+              data = prison.ribbon) +
+  geom_text(aes(x, y, label = str_to_title(labels), color = labels),
+            fontface = 2,
+            data = prison.labels) +
+  
+  labs(title = 'Incarceration Rates by Race, 2008-2018',
+       subtitle = 'While the difference in incarceration rates has narrowed in recent years, in 2018\nblack Americans were incarcerated at 5.7 times the rate of white Americans.', 
+       x = 'Year', y = 'Incarceration Rate\n(per 100,000)',
+       caption = 'Source: Bureau of Justice Statistics, Federal Justice Statistics Program, U.S. Census Bureau',
+       color = 'Race') +
+  
+  scale_x_continuous(limits = c(2008,2018),
+                     breaks = c(2008:2018),
+                     labels = c('\'08', '\'09', 2010, paste('\'', c(11:18)))) +
+  scale_y_continuous(limits = c(0,2250)) +
+  scale_color_brewer(palette='Paired', direction = -1) + 
+  
+  theme(panel.grid.minor.x = element_blank(),
+        legend.position = 'none')
+
+# create table showing rate of Black Incarceration as multiple of White rate
+prison.ribbon %>% mutate(rate.multiple = black / white)
 ```
 
