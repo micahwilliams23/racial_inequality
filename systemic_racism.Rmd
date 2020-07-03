@@ -12,6 +12,10 @@ knitr::opts_chunk$set(echo = TRUE,
 library(tidycensus)
 library(tidyverse)
 library(readxl)
+library(maptools)
+library(plotly)
+library(htmlwidgets)
+library(scales)
 
 theme_set(theme_minimal())
 ribbon.fill = rgb(1,0.3,0.2,0.4)
@@ -421,8 +425,84 @@ ggsave('images/prison_dark.png', width = 8, height = 5, dpi = 'retina')
 prison.ribbon %>% mutate(rate.multiple = black / white) %>% slice(1,11)
 ```
 
-```{r police}
+```{r police, include = F}
 # Source: Bureau of Justice Statistics, Law Enforcement Management and Administrative Statistics survey, 2016.
-read_csv('data/local_police/lpd16pt06.csv')
+# read_csv('data/local_police/lpd16pt06.csv')
 ```
+
+```{r scatterplot_data}
+# get acs data for black population
+black_pops <- get_acs('county',
+                      year = 2018,
+                      variables = 'B01001B_001',
+                      summary_var = 'B01001_001',
+                      cache_table = T)
+
+# find FIPS codes for top 100 counties by black pop
+black_fips <- black_pops %>% 
+  mutate(percent = 100 * estimate / summary_est) %>%
+  arrange(desc(percent)) %>%
+  # slice(1:100) %>%
+  select(black.pop = estimate, percent, GEOID)
+
+# find income data for above counties
+county_income <- get_acs('county',
+                         year = 2018,
+                         variables = c('B19013B_001', 'B19013A_001'),
+                         cache_table = T,
+                         geometry = T) %>%
+  mutate(race = case_when(variable == 'B19013B_001' ~ 'Black',
+                          variable == 'B19013A_001' ~ 'White')) %>%
+  group_by(GEOID) %>%
+  nest()
+
+county_income %>%
+  group_by(GEOID) %>%
+  nest(data = c(NAME, variable, estimate, moe, race)) %>%
+  ungroup() %>%
+  slice(1) %>%
+  .$data
+  summarize(income.diff = map_dbl(.[[1]]$estimate, ~.[1]-.[2]))
+  
+  # ungroup() %>%
+  # slice(1)
+  summarize(income.diff = map_dbl(data[[1]]$estimate, ~.[[1]][1]))
+  full_join(black_fips, by = c('GEOID'))
+
+# create linear model of income and percet black
+percent_income_model <- lm(income ~ percent, data = county_income)
+rsq <- summary(percent_income_model)$r.squared
+```
+
+
+```{r plotly}
+# draw plot of percent black vs median household income
+county_plot <- county_income %>%
+  ggplot(aes(text = paste(NAME,
+                          '\nBlack Population: ', prettyNum(black.pop, big.mark = ','),
+                          ' (', round(percent,1), '%)',
+                          '\nMedian Income: $', prettyNum(income, big.mark = ','), sep = ''))) +
+  
+  # add points for counties and line of best fit
+  geom_sf(aes(percent, income),
+  alpha = 0.2) +
+  geom_smooth(aes(percent, income),
+              alpha = 1, color= 'red', size = 5) +
+  # geom_abline(aes(intercept = percent_income_model$coefficients['(Intercept)'], 
+  #                 slope = percent_income_model$coefficients['percent']))
+  
+  labs(title = 'Median Black Household Income vs. Percent Black Population, by County',
+       subtitle = 'Includes data for 100 counties with highest percent black population.',
+       y = 'Median Household Income',
+       x = 'Percent Black') +
+  
+  scale_x_continuous(breaks = seq(0,90,15),
+                     labels = paste(seq(0,90,15),'%', sep = '')) +
+  scale_y_continuous(breaks = seq(0,200000,40000),
+                     labels = paste('$',seq(0,200,40),'K', sep = '')); county_plot
+
+# ggplotly(county_plot, tooltip = 'text')
+```
+
+
 
