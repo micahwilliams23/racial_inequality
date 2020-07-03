@@ -12,10 +12,8 @@ knitr::opts_chunk$set(echo = TRUE,
 library(tidycensus)
 library(tidyverse)
 library(readxl)
-library(maptools)
-library(plotly)
-library(htmlwidgets)
-library(scales)
+# library(plotly)
+# library(htmlwidgets)
 
 theme_set(theme_minimal())
 ribbon.fill = rgb(1,0.3,0.2,0.4)
@@ -446,62 +444,68 @@ black_fips <- black_pops %>%
   select(black.pop = estimate, percent, GEOID)
 
 # find income data for above counties
-county_income <- get_acs('county',
+income_acs <- get_acs('county',
                          year = 2018,
-                         variables = c('B19013B_001', 'B19013A_001'),
-                         cache_table = T,
-                         geometry = T) %>%
-  mutate(race = case_when(variable == 'B19013B_001' ~ 'Black',
-                          variable == 'B19013A_001' ~ 'White')) %>%
-  group_by(GEOID) %>%
-  nest()
-
-county_income %>%
-  group_by(GEOID) %>%
-  nest(data = c(NAME, variable, estimate, moe, race)) %>%
-  ungroup() %>%
-  slice(1) %>%
-  .$data
-  summarize(income.diff = map_dbl(.[[1]]$estimate, ~.[1]-.[2]))
-  
-  # ungroup() %>%
-  # slice(1)
-  summarize(income.diff = map_dbl(data[[1]]$estimate, ~.[[1]][1]))
+                         variables = 'B19013B_001',
+                         summary_var = 'B19013A_001',
+                         cache_table = T) %>%
+  mutate(white.factor = summary_est / estimate) %>%
   full_join(black_fips, by = c('GEOID'))
-
-# create linear model of income and percet black
-percent_income_model <- lm(income ~ percent, data = county_income)
-rsq <- summary(percent_income_model)$r.squared
 ```
 
+```{r white_wealth}
+# rename columns for clearer names, filter out counties with very small black populations
+county_income <- income_acs %>%
+  filter(!is.na(moe), percent >= 5) %>%
+  arrange(desc(white.factor)) %>%
+  select(GEOID, NAME, black.income = estimate, white.income = summary_est, white.factor:percent)
 
-```{r plotly}
-# draw plot of percent black vs median household income
-county_plot <- county_income %>%
-  ggplot(aes(text = paste(NAME,
-                          '\nBlack Population: ', prettyNum(black.pop, big.mark = ','),
-                          ' (', round(percent,1), '%)',
-                          '\nMedian Income: $', prettyNum(income, big.mark = ','), sep = ''))) +
-  
-  # add points for counties and line of best fit
-  geom_sf(aes(percent, income),
-  alpha = 0.2) +
-  geom_smooth(aes(percent, income),
-              alpha = 1, color= 'red', size = 5) +
-  # geom_abline(aes(intercept = percent_income_model$coefficients['(Intercept)'], 
-  #                 slope = percent_income_model$coefficients['percent']))
-  
-  labs(title = 'Median Black Household Income vs. Percent Black Population, by County',
-       subtitle = 'Includes data for 100 counties with highest percent black population.',
-       y = 'Median Household Income',
-       x = 'Percent Black') +
-  
-  scale_x_continuous(breaks = seq(0,90,15),
-                     labels = paste(seq(0,90,15),'%', sep = '')) +
-  scale_y_continuous(breaks = seq(0,200000,40000),
-                     labels = paste('$',seq(0,200,40),'K', sep = '')); county_plot
+# create linear model of income and percet black
+income_model <- lm(white.income ~ black.income, data = county_income)
+rsq <- summary(income_model)$r.squared
+coefs <- income_model$coefficients
 
-# ggplotly(county_plot, tooltip = 'text')
+# create tibble for line labels
+lines <- tibble(x = c(106000,107000),
+                y= c(97000, 130000),
+                labels = c('\'Ideal\' Line', 'Line of Best Fit'),
+                bold = c(1,2),
+                angle = c(25,20))
+
+# create plot ADD LABELS TO OUTLIER POINTS
+income_plot <- county_income %>%
+  ggplot() +
+  
+  # add points for counties
+  geom_point(aes(black.income, white.income),
+             alpha = 0.35,
+             color = 'steelblue') +
+  
+  # add line of best fit and 'ideal' line
+  geom_abline(slope = coefs['black.income'], 
+              intercept = coefs['(Intercept)'],
+              size = 1.5, color = 'darkblue') +
+  geom_abline(slope = 1, intercept = 0, lty = 2) + 
+  
+  # add labels for lines
+  geom_text(aes(x = x, y = y, 
+                label = labels, 
+                fontface = bold),
+            data = lines) +
+  
+  # simplify scales for readability
+  scale_x_continuous(breaks = seq(0,125000,25000),
+                     labels = paste('$', seq(0,125,25), 'K', sep = '')) +
+  scale_y_continuous(breaks = seq(0,125000,25000),
+                     labels = paste('$', seq(0,125,25), 'K', sep = '')) +
+  
+  # add labels, title, etc.
+  labs(title = 'Median Household Income, Black vs. White by County',
+       subtitle = 'Includes only counties with at least 5% black population.',
+       x = 'Median Household Income, Black',
+       y = 'Median Household Income, White',
+       caption = 'Source: 2018 American Community Survey'); income_plot
+
 ```
 
 
