@@ -291,9 +291,9 @@ homes %>%
               data = diff.area) +
   
   scale_color_brewer(palette = 'Paired', direction = -1) +
-  scale_y_continuous(limits = c(40, 80),
-                     breaks = seq(40,80,10),
-                     labels = paste(seq(40,80,10), '%', sep = '')) +
+  scale_y_continuous(limits = c(0, 100),
+                     breaks = seq(0,100,20),
+                     labels = paste(seq(0,100,20), '%', sep = '')) +
   scale_x_continuous(limits = c(1994,2020),
                      breaks = seq(1995,2020,5),
                      labels = c('\'95', '2000', paste('\'', c('05', 10, 15, 20), sep = ''))) +
