@@ -1,0 +1,82 @@
+"Bureau of Justice Statistics",,,,,,,,,,,,,,,
+"Filename:  p0004.csv",,,,,,,,,,,,,,,
+"Table #4:  Change in the number of sentenced prisoners under the jurisdiction of State or Federal correctional authorities, 1990-2000",,,,,,,,,,,,,,,
+"Report title:  Prisoners in 2000 NCJ 188207",,,,,,,,,,,,,,,
+"Data source:  National Prisoner Statistics-1",,,,,,,,,,,,,,,
+"Refer questions to:  askbjs@ojp.usdoj.gov  202-307-0765",,,,,,,,,,,,,,,
+"Contact:  Allen Beck or Paige Harrison",,,,,,,,,,,,,,,
+"Date of version:  8/8/01",,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+"Table 4.  Change in the number of sentenced prisoners under the jurisdiction ",,,,,,,,,,"Figures for calculating population difference",,,,,
+"of State or Federal correctional authorities, 1990-2000",,,,,,,,,,"and percent change",,,,"Reporting method",
+,,,,,,,,,,"Inmates with sentences",,,,"C = custody",
+,,"                 1990-2000",,,,"Average",,,,"of greater than 1 year",,,,"J = jurisdiction",
+"Region and ",,"Population ",,"Percent",,"annual per-",,,,"   1990    ",,"   2000   ",,1990,2000
+"jurisdiction          ",,"difference     ",,"change         ",,"cent change            ",,,,,,,,,
+"    U.S. total",,574029,,76.8,"%",5.9,"%",,,747108,,1320960,,,
+,,,,,,,,,,,,,,,
+"Federal",,74641,,148.1,"%",9.5,"%",,,50403,,125044,,"J","J"
+"State",,499388,,71.7,,5.6,,,,696705,,1195916,,,
+,,,,,,,,,,,,,,,
+"Northeast",,47568,,40.0,"%",3.4,"%",,,119063,,166631,,,
+"Connecticut",,5384,,69.3,,5.4,,,,7771,,13155,,"J","J"
+"Maine",,155,,10.5,,1.0,,,,1480,,1635,,"J","J"
+"Massachusetts/a",,1580,,20.0,,1.8,,,,7899,,9479,,"C","J"
+"New Hampshire",,915,,68.2,,5.3,,,,1342,,2257,,"J","J"
+"New Jersey",,8656,,41.0,,3.5,,,,21128,,29784,,"J","J"
+"New York",,15303,,27.9,,2.5,,,,54895,,70198,,"J","J"
+"Pennsylvania",,14563,,65.4,,5.2,,,,22281,,36844,,"J","J"
+"Rhode Island",,380,,24.0,,2.2,,,,1586,,1966,,"J","J"
+"Vermont",,632,,92.8,,6.8,,,,681,,1313,,"J","J"
+,,,,,,,,,,,,,,,
+"Midwest",,90604,,62.2,"%",5.0,"%",,,145581,,236185,,,
+"Illinois",,17765,,64.6,,5.1,,,,27516,,45281,,"C","C"
+"Indiana/a",,7466,,59.2,,4.8,,,,12615,,20081,,"C","J"
+"Iowa",,3988,,100.5,,7.2,,,,3967,,7955,,"C","C"
+"Kansas",,2569,,44.5,,3.7,,,,5775,,8344,,"J","J"
+"Michigan/a",,13451,,39.3,,3.4,,,,34267,,47718,,"C","J"
+"Minnesota",,3062,,96.4,,7.0,,,,3176,,6238,,"J","J"
+"Missouri",,12356,,82.7,,6.2,,,,14943,,27299,,"J","J"
+"Nebraska",,1530,,66.9,,5.3,,,,2286,,3816,,"J","J"
+"North Dakota",,559,,128.5,,8.6,,,,435,,994,,"J","J"
+"Ohio",,14011,,44.0,,3.7,,,,31822,,45833,,"J","J"
+"South Dakota",,1272,,94.9,,6.9,,,,1341,,2613,,"J","J"
+"Wisconsin",,12575,," --   ",,"--",,,,7438,,20013,,"J","J"
+,,,,,,,,,,,,,,,
+"South",,246444,,87.2,"%",6.5,"%",,,282581,,528839,,,
+"Alabama",,8758,,57.0,,4.6,,,,15365,,24123,,"J","J"
+"Arkansas",,4577,,62.9,,5.0,,,,7274,,11851,,"J","J"
+"Delaware",,1696,,75.7,,5.8,,,,2241,,3937,,"J","J"
+"District of Columbia/a",,"-1,790 ",,-26.3,,"--",,,,6798,,5008,,"C","J"
+"Florida",,26938,,60.7,,4.9,,,,44380,,71318,,"C","C"
+"Georgia",,22470,,103.7,,7.4,,,,21671,,44141,,"C","C"
+"Kentucky",,5896,,65.3,,5.2,,,,9023,,14919,,"J","J"
+"Louisiana",,16448,,88.4,,6.5,,,,18599,,35047,,"J","J"
+"Maryland",,5756,,34.4,,3.0,,,,16734,,22490,,"J","J"
+"Mississippi",,11155,,138.0,,9.1,,,,8084,,19239,,"J","J"
+"North Carolina/a",,9279,,52.2,,4.3,,,,17764,,27043,,"C","J"
+"Oklahoma",,10896,,88.7,,6.6,,,,12285,,23181,,"J","J"
+"South Carolina",,4809,,29.7,,2.6,,,,16208,,21017,,"J","J"
+"Tennessee",,11778,,113.4,,7.9,,,,10388,,22166,,"J","J"
+"Texas/b",,93323,,164.3,,10.2,,,,56784,,150107,,"J","J"
+"Virginia",,12225,,70.2,,5.5,,,,17418,,29457,,"J","J"
+"West Virginia",,2230,,142.5,,9.3,,,,1565,,3795,,"J","J"
+,,,,,,,,,,,,,,,
+"West",,114772,,76.8,"%",5.9,"%",,,149480,,264261,,,
+"Alaska",,277,,15.0,,1.4,,,,1851,,2128,,"J","J"
+"Arizona",,11631,,84.4,,6.3,,,,13781,,25412,,"C","C"
+"California/a",,66290,,70.4,,5.5,,,,94122,,160412,,"C","J"
+"Colorado",,9162,,119.4,,8.2,,,,7671,,16833,,"J","J"
+"Hawaii",,1845,,108.0,,7.6,,,,1708,,3553,,"J","J"
+"Idaho",,3565,,181.8,,10.9,,,,1961,,5535,,"J","J"
+"Montana",,1680,,117.9,,8.1,,,,1425,,3105,,"J","J"
+"Nevada",,4098,,70.4,,5.5,,,,5823,,9921,,"J","J"
+"New Mexico",,1820,,59.3,,4.8,,,,3067,,4887,,"J","J"
+"Oregon",,4111,,63.3,,5.0,,,,6492,,10603,,"J","J"
+"Utah",,3052,,123.4,,8.4,,,,2474,,5526,,"J","J"
+"Washington",,6671,,83.4,,6.3,,,,7995,,14666,,"J","J"
+"Wyoming/a",,570,,51.4,,4.2,,,,1110,,1680,,"C","J"
+"                                                ",,,,,,"                                      ",,,,,,,,,
+" -- Not calculated because of changes in reporting procedures.",,,,,,,,,,,,,,,
+"a/Growth may be slightly overestimated due to a change in reporting from custody to jurisdiction counts.",,,,,,,,,,,,,,,
+"b/Includes 6,742 ""paper-ready"" State inmates held in local jails in 1990.",,,,,,,,,,,,,,,

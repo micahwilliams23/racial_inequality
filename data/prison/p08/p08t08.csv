@@ -1,0 +1,27 @@
+Bureau of Justice Statistics,,,,,,,,,,,,,
+Filename: p08t08.csv,,,,,,,,,,,,,
+"Table 8. Inmates held in custody in state or federal prisons or in local jails, December 31, 2000, 2007, and 2008",,,,,,,,,,,,,
+Report title: Prisoners in 2008 NCJ 228417,,,,,,,,,,,,,
+"Data source: National Prisoner Statistics, 1b",,,,,,,,,,,,,
+"Authors: William J. Sabol, Ph.D., Heather C. West, Ph.D., and Matthew Cooper",,,,,,,,,,,,,
+Refer questions to: askbjs@usdoj.gov   202-307-0765,,,,,,,,,,,,,
+"Date of version: December 8, 2009",,,,,,,,,,,,,
+,,,,,,,,,,,,,
+"Table 8: Inmates held in custody in state or federal prisons or in local jails, December 31, 2000, 2007, and 2008",,,,,,,,,,,,,
+,,,,Number of inmates,,,,,,Percent of inmates,,,
+Inmates in custody,,,,12/31/2000,,12/31/2007,,12/31/2008,,"Average annual change, 2000-2007",,"Percent change, 2007-2008",
+,,,Totala,"1,937,482",,"2,298,041",,"2,304,115",,2.5,%,0.3,%
+Federal prisoners/b,,,,,,,,,,,,,
+,Total,,,"140,064",,"197,285",,"198,414",,5,%,0.6,%
+,,Prisons,,"133,921",,"189,154",,"189,770",,5.1,,0.3,
+,,,Federal facilities,"124,540",,"165,975",,"165,252",,4.2,,-0.4,
+,,,Privately operated facilities,"9,381",,"23,179",,"24,518",,13.8,,5.8,
+,,Community Corrections Centers/c,,"6,143",,"8,131",,"8,644",,4.1,,6.3,
+State prisoners/a,,,,"1,176,269",,"1,320,582",,"1,320,145",,1.7,%,0,%
+Local jails/d,,,,"621,149",,"780,174",,"785,556",,3.3,%,0.7,%
+"Incarceration rate/a,e",,,,684,,756,,754,,1.4,%,-0.3,%
+"a/Total includes all inmates held in state or federal prison facilities or in local jails. It does not include inmates held in U.S. territories, military facilities, U.S. Immigration and Customs Enforcement (ICE) facilities, jails in Indian country, and juvenile facilities.",,,,,,,,,,,,,
+b/After 2001 the responsibility for sentenced felons from the District of Columbia was transferred to the Federal Bureau of Prisons.,,,,,,,,,,,,,
+"c/Non-secure, privately operated community corrections centers. ",,,,,,,,,,,,,
+d/Counts for inmates held in local jails are for the last weekday of June in each year. Counts were estimated from the Annual Survey of Jails. See Methodology. ,,,,,,,,,,,,,
+"e/The total number in custody of state or federal prison facilities or local jails per 100,000 U.S. residents. Resident population estimates were as of January 1 of the following year for December 31 estimates. ",,,,,,,,,,,,,

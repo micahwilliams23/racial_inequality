@@ -1,0 +1,24 @@
+Bureau of Justice Statistics,,,,,,,,,,,,,,,
+Filename: p08t06.csv,,,,,,,,,,,,,,,
+"Table 6. Estimated rate of sentenced prisoners under state or federal jurisdiction, per 100,000 U.S. residents, by gender, race, and Hispanic origin, December 31, 2000-2008",,,,,,,,,,,,,,,
+Report title: Prisoners in 2008 NCJ 228417,,,,,,,,,,,,,,,
+"Data source: National Prisoner Statistics, 1b",,,,,,,,,,,,,,,
+"Authors: William J. Sabol, Ph.D., Heather C. West, Ph.D., and Matthew Cooper",,,,,,,,,,,,,,,
+Refer questions to: askbjs@usdoj.gov   202-307-0765,,,,,,,,,,,,,,,
+"Date of version: December 8, 2009",,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+"Table 6: Estimated rate of sentenced prisoners under state or federal jurisdiction, per 100,000 U.S. residents, by gender, race, and Hispanic origin, December 31, 2000-2008",,,,,,,,,,,,,,,
+,Males,,,,,,,,Females,,,,,,
+Year,Total/a,,White/b,,Black/b,,Hispanic,,Total/a,,White/b,,Black/b,,Hispanic
+2000,904,,449,,"3,457",,"1,220",,59,,34,,205,,60
+2001,896,,462,,"3,535",,"1,177",,58,,36,,199,,61
+2002,912,,450,,"3,437",,"1,176",,61,,35,,191,,80
+2003,915,,465,,"3,405",,"1,231",,62,,38,,185,,84
+2004,926,,463,,"3,218",,"1,220",,64,,42,,170,,75
+2005,929,,471,,"3,145",,"1,244",,65,,45,,156,,76
+2006,943,,487,,"3,042",,"1,261",,68,,48,,148,,81
+2007,955,,481,,"3,138",,"1,259",,69,,50,,150,,79
+2008,952,,487,,"3,161",,"1,200",,68,,50,,149,,75
+"Note: Totals based on prisoners sentenced to more than 1 year. Imprisonment rates are per 100,000 U.S. residents in each reference population group. See Methodology for estimation method. ",,,,,,,,,,,,,,,
+"a/Includes American Indians, Alaska Natives, Asians, Native Hawaiians, other Pacific Islanders, and persons identifying two or more races.",,,,,,,,,,,,,,,
+b/Excludes persons of Hispanic or Latino origin. ,,,,,,,,,,,,,,,

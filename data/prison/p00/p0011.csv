@@ -1,0 +1,85 @@
+"Bureau of Justice Statistics",,,,,,,,,,,,,
+"Filename:  p0011.csv",,,,,,,,,,,,,
+"Table #11:  Number of State public and private adult correctional facilities, June 30, 1990 and 2000",,,,,,,,,,,,,
+"Report title:  Prisoners in 2000 NCJ 188207",,,,,,,,,,,,,
+"Data source:  National Prisoner Statistics-1",,,,,,,,,,,,,
+"Refer questions to:  askbjs@ojp.usdoj.gov  202-307-0765",,,,,,,,,,,,,
+"Contact:  Allen Beck or Paige Harrison",,,,,,,,,,,,,
+"Date of version:  8/8/01",,,,,,,,,,,,,
+,,,,,,,,,,,,,
+"Table 11.  Number of State public and private adult correctional facilities, June 30, 1990 and 2000",,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,"Total capacity ",,,,,
+,,"  1990",,"            2000",,,,"added, 1990-2000",,,,"Figures to calculate number of beds added:",
+"Region and ",,"All",,"All","Confine-",,,"Number ","Percent ",,,"Rated capacity in:",
+"jurisdiction          ",,"facilities",,"facilities","ment/a",,,"of beds","change",,,1990,2000
+,,,,,,,,,,,,,
+"    U.S. total/b",,1207,,1558,1109,,,528274,81.2,"%",,650600,1178874
+,,,,,,,,,,,,,
+"Northeast",,182,,233,175,,,50957,46.6,"%",,109448,160405
+"Connecticut",,20,,20,20,,,8325,89.8,,,9275,17600
+"Maine",,7,,8,6,,,234,17.8,,,1311,1545
+"Massachusetts",,20,,25,18,,,5797,92.0,,,6299,12096
+"New Hampshire",,5,,8,5,,,951,90.7,,,1049,2000
+"New Jersey",,25,,43,25,,,10790,66.7,,,16189,26979
+"New York",,62,,69,63,,,12313,21.8,,,56406,68719
+"Pennsylvania",,30,,44,25,,,10049,61.5,,,16353,26402
+"Rhode Island",,7,,7,6,,,1929,107.8,,,1790,3719
+"Vermont",,6,,9,7,,,569,73.3,,,776,1345
+,,,,,,,,,,,,,
+"Midwest",,255,,301,238,,,80711,60.2,"%",,134106,214817
+"Illinois",,39,,48,36,,,10352,44.2,,,23409,33761
+"Indiana",,23,,25,21,,,1514,11.1,,,13701,15215
+"Iowa",,24,,30,8,,,3964,87.7,,,4520,8484
+"Kansas",,16,,11,10,,,3782,71.2,,,5312,9094
+"Michigan",,67,,70,61,,,17211,55.6,,,30979,48190
+"Minnesota",,9,,9,9,,,4876,147.8,,,3299,8175
+"Missouri",,17,,28,25,,,14782,98.3,,,15033,29815
+"Nebraska",,7,,9,7,,,1600,88.0,,,1819,3419
+"North Dakota",,2,,3,3,,,332,57.7,,,575,907
+"Ohio",,22,,34,34,,,11941,41.5,,,28766,40707
+"South Dakota",,2,,4,3,,,1381,110.3,,,1252,2633
+"Wisconsin",,27,,30,21,,,8976,165.0,,,5441,14417
+,,,,,,,,,,,,,
+"South",,534,,730,516,,,272889,104.0,"%",,262286,535175
+"Alabama",,28,,35,19,,,9300,72.5,,,12825,22125
+"Arkansas",,13,,15,8,,,3496,53.5,,,6530,10026
+"Delaware",,8,,9,5,,,2190,62.1,,,3526,5716
+"District of Columbia",,11,,6,1,,,(4699),(63.4),,,7411,2712
+"Florida",,100,,106,69,,,28550,60.7,,,47069,75619
+"Georgia",,32,,83,57,,,25812,131.2,,,19676,45488
+"Kentucky",,15,,25,15,,,5730,78.7,,,7280,13010
+"Louisiana",,20,,17,10,,,5562,39.3,,,14142,19704
+"Maryland",,21,,26,18,,,8826,56.4,,,15640,24466
+"Mississippi",,24,,28,9,,,9875,134.1,,,7363,17238
+"North Carolina",,91,,80,68,,,14763,77.7,,,18996,33759
+"Oklahoma",,23,,52,26,,,15623,165.5,,,9439,25062
+"South Carolina",,32,,34,24,,,7658,48.9,,,15669,23327
+"Tennessee",,18,,15,15,,,9891,107.2,,,9229,19120
+"Texas",,43,,127,114,,,109975,211.6,,,51971,161946
+"Virginia",,48,,61,49,,,18861,135.7,,,13898,32759
+"West Virginia",,7,,11,9,,,1476,91.0,,,1622,3098
+,,,,,,,,,,,,,
+"West",,236,,294,180,,,123717,85.5,"%",,144760,268477
+"Alaska",,13,,24,14,,,1042,40.4,,,2580,3622
+"Arizona",,20,,16,13,,,10941,74.7,,,14641,25582
+"California",,100,,86,49,,,73005,79.3,,,92075,165080
+"Colorado",,14,,47,27,,,12850,257.4,,,4992,17842
+"Hawaii",,10,,10,8,,,908,35.6,,,2552,3460
+"Idaho",,7,,13,8,,,3452,193.8,,,1781,5233
+"Montana",,5,,8,4,,,1538,171.3,,,898,2436
+"Nevada",,17,,20,12,,,3749,63.2,,,5934,9683
+"New Mexico",,11,,10,10,,,2892,91.0,,,3179,6071
+"Oregon",,11,,13,13,,,6042,113.2,,,5339,11381
+"Utah",,8,,8,4,,,2197,72.5,,,3029,5226
+"Washington",,16,,30,13,,,3235,48.2,,,6712,9947
+"Wyoming",,4,,9,5,,,1866,178.1,,,1048,2914
+,,,,,,,,,,,,,
+"Note: Based on the Census of State and Federal Adult Correctional Facilities,",,,,,,,,,,,,,
+"1990 and 2000 (see Methodology.)",,,,,,,,,,,,,
+"a/Excludes facilities in which 50% or more of inmates are permitted to ",,,,,,,,,,,,,
+"leave unaccompanied or the primary facility function was community",,,,,,,,,,,,,
+"corrections, work release, or prerelease. ",,,,,,,,,,,,,
+"b/Excludes 84 Federal facilities and 26 privately operated facilities that",,,,,,,,,,,,,
+"held at least 50% of their inmates for Federal authorities, including the ",,,,,,,,,,,,,
+"Immigration and Naturalization Service and the U.S. Marshals Service. ",,,,,,,,,,,,,

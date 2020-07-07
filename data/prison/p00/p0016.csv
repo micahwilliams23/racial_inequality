@@ -1,0 +1,49 @@
+"Bureau of Justice Statistics",,,,,,
+"Filename:  p0016.csv",,,,,,
+"Table #16:  Estimated number of sentenced prisoners under State jurisdiction,",,,,,,
+"by offense, gender, race, and Hispanic origin, 1999",,,,,,
+"Report title:  Prisoners in 2000 NCJ 188207",,,,,,
+"Data source:  National Prisoner Statistics-1",,,,,,
+"Refer questions to:  askbjs@ojp.usdoj.gov  202-307-0765",,,,,,
+"Contact:  Allen Beck or Paige Harrison",,,,,,
+"Date of version:  8/8/01",,,,,,
+,,,,,,
+,,,,,,
+"Table 16. Estimated number of sentenced prisoners under State jurisdiction, ",,,,,,
+"by offense, gender, race, and Hispanic origin, 1999",,,,,,
+,,,,,,
+"Offenses","All","Male","Female","White","Black","Hispanic"
+"   Total",1189800,1115400,74400,396100,553100,202100
+,,,,,,
+"Violent offenses",570000,548400,21600,189300,266300,93800
+"   Murder/a",141500,134900,6600,44000,70700,22900
+"   Manslaughter",17500,15700,1800,6200,6900,3400
+"   Rape",30900,30600,300,14200,12400,2600
+"   Other sexual assault",78100,77300,800,44600,19300,10800
+"   Robbery",161800,156600,5200,33800,97300,26200
+"   Assault",115100,109700,5400,35800,50500,23800
+"   Other violent",25100,23600,1500,10700,9100,4200
+,,,,,,
+"Property offenses",245000,225400,19600,103900,98500,34100
+"   Burglary",116600,112900,3800,49200,47200,16200
+"   Larceny",46700,40500,6100,17300,21000,6400
+"   Motor vehicle theft",19900,19200,700,7700,7300,4400
+"   Fraud ",31700,24100,7600,16000,12000,2800
+"   Other property",30100,28700,1400,13600,11000,4200
+,,,,,,
+"Drug offenses",251200,226100,25100,50700,144700,52100
+,,,,,,
+"Public-order offenses/b",120600,112800,7800,51500,42100,21300
+,,,,,,
+"Other/unspecified/c",3000,2700,300,600,1500,700
+,,,,,,
+"Note: Data are for inmates with a sentence of more than 1 year ",,,,,,
+"under the jursidiction of State correctional authorities. The ",,,,,,
+"number of inmates by offense were estimated using the 1997 ",,,,,,
+"Survey of Inmates in State Correctional Facilities and rounded",,,,,,
+"to the nearest 100. ",,,,,,
+"a/Includes nonnegligent manslaughter.",,,,,,
+"b/Includes weapons, drunk driving, court offenses, commercialized ",,,,,,
+"vice, morals and decency charges, liquor law violations, and other",,,,,,
+"public-order offenses. ",,,,,,
+"c/Includes juvenile offenses and unspecified felonies.",,,,,,

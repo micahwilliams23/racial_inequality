@@ -13,11 +13,11 @@ library(tidycensus)
 library(tidyverse)
 library(readxl)
 library(gt)
-# library(plotly)
-# library(htmlwidgets)
+library(RColorBrewer)
+library(maptools)
 
 theme_set(theme_minimal())
-ribbon.fill = rgb(1,0.3,0.2,0.4)
+ribbon.fill = rgb(1,0.3,0.2,0.1)
 ```
 
 ```{r get_acs_table}
@@ -239,7 +239,120 @@ us_education %>%
 # ggsave('images/education.png', height = 5, width = 9, dpi = 'retina')
 ```
 
-```{r homes, warning = F, message = F}
+```{r county_coords}
+# import geometry from shapefiles
+county_geom <- rgdal::readOGR(dsn = './data/gz_2010_us_050_00_5m','gz_2010_us_050_00_5m')
+
+# below code heavily sampled from https://www.r-bloggers.com/moving-the-earth-well-alaska-hawaii-with-r/
+# rearrange Alaska and Hawaii to be near lower 48 states
+
+# select Hawaii geom from county file
+hawaii <- county_geom[county_geom$STATE == '15',] %>%
+  
+  # scale up to double size, move to below southwest USA
+  elide(scale=max(apply(bbox(.), 1, diff)) * 2) %>% 
+  elide(shift=c(-113, 23))
+
+# assign proj4string so that new Hawaii geom can replace old geom
+hawaii@proj4string <- county_geom@proj4string
+
+# select Alaska geom from county file
+alaska <- county_geom[county_geom$STATE == '02',] %>%
+  
+  # scale to one-third(ish) size, rotate slightly, move to near new Hawaii location
+  elide(scale = max(apply(bbox(.), 1, diff)) / 3.4) %>%
+  elide(rotate = -5) %>%
+  elide(shift = c(-123, 20.5))
+
+# assign proj4string so that new Alaska can replace old geom
+alaska@proj4string <- county_geom@proj4string
+
+# replace old Alaska and Hawaii geoms with edited versions
+county_geom <- rbind(county_geom[!county_geom$STATE %in% c('15','02'),],
+                    hawaii, alaska)
+
+# convert geometry file to tidy dataframe for plotting
+county_coords <- fortify(county_geom, region = 'GEO_ID') %>%
+  
+  # extract state and county FIPS codes
+  mutate(state_code = str_extract(id, '(?![:alnum:]{9})[:digit:]{2}'),
+         GEOID = str_extract(id, '(?![:alnum:]{9})[:digit:]{5}')) %>%
+
+  #filter out extreme Alaskan islands that were mangled in the move
+  filter(long < -60)
+  
+# combine county polygons by state to create state polygons
+state_geom <- unionSpatialPolygons(county_geom, county_geom$STATE)
+
+# convert state geometry to tidy dataframe for plotting
+state_coords <- fortify(state_geom) %>%
+  
+  # rename state code column, filter out Puerto Rico and mangled Alaskan islands
+  select(state = id, everything()) %>%
+  filter(state != '72', long < -60)
+```
+
+```{r education_map}
+# get educational attainment data from 2018 ACS
+education_county <- get_acs(variables = 'C15002B_003',
+                           year = 2018,
+                           geography = 'county',
+                           summary_var = 'C15002B_001',
+                           cache_table = T) %>%
+  
+  # create percentage of NOT less than high school diploma, extract state FIPS codes
+  mutate(percent = (summary_est - estimate) / summary_est * 100,
+         state = str_extract(GEOID, '[:digit:]{2}')) %>%
+  
+  # join ACS data with county coordinates for map plot
+  full_join(county_coords, by = 'GEOID')
+
+# filter out Puerto Rico and plot map, filled by percent high school grads
+education_county %>%
+  filter(state != '72') %>%
+  ggplot() +
+  geom_polygon(aes(long, lat, group = group, 
+                   fill = percent),
+               color = '#666666',
+               size = 0.2) +
+  
+  # change map projection
+  coord_map('conic', lat0 = 30) +
+  
+  # change color scales to match percentage distribution
+  scale_fill_gradientn(breaks = c(0, 85, 92, 96, 100),
+                       values =c(0, 85, 92, 96, 100) / 100,
+                       colors = brewer.pal(4, 'RdYlGn'),
+                       na.value = 'gray',
+                       guide = 'legend',
+                       labels = c('0-85%', '85-92%', '92-96%', '96-100%', '100%')) +
+  scale_color_gradientn(breaks = c(0, 85, 92, 96, 100),
+                        values = c(0, 0.85, 0.92, 0.96, 1),
+                        colors = brewer.pal(4, 'RdYlGn'),
+                        na.value = 'gray',
+                        guide = 'legend',
+                        labels = c('0-85%', '85-92%', '92-96%', '96-100%', '100%')) +
+  
+  # add state boundary lines
+  geom_path(aes(long, lat, group = group, fill = NULL),
+            color = '#666666',
+            data = state_coords) +
+  
+  # add title and source note
+  labs(title = 'Percent of Black Males With At Least High School Diploma, by County',
+       subtitle = 'Nationwide, highest educational attainment for 30.8% of black men is less than a high school diploma.',
+       caption = 'Source: 2018 American Community Survey. Data for some counties missing.') +
+  
+  # remove theme, relocate legend
+  theme_void() +
+  theme(legend.position = c(0.9, 0.5),
+        legend.title = element_blank())
+
+# save map to files
+ggsave('images/education_map.png', width = 9, height = 5, dpi = 'retina')
+```
+
+```{r homes_data, warning = F, message = F}
 # suppress warnings and messages about columns and rows that are later discarded
 
 # skip empty rows at top of table, set column types, clean column names with janitor
@@ -290,10 +403,10 @@ homes %>%
               fill = ribbon.fill,
               data = diff.area) +
   
-  scale_color_brewer(palette = 'Paired', direction = -1) +
-  scale_y_continuous(limits = c(0, 100),
-                     breaks = seq(0,100,20),
-                     labels = paste(seq(0,100,20), '%', sep = '')) +
+  scale_color_manual(values = c('#377EB8', '#6baed6')) +
+  scale_y_continuous(limits = c(30, 90),
+                     breaks = seq(20,90,10),
+                     labels = paste(seq(20,90,10), '%', sep = '')) +
   scale_x_continuous(limits = c(1994,2020),
                      breaks = seq(1995,2020,5),
                      labels = c('\'95', '2000', paste('\'', c('05', 10, 15, 20), sep = ''))) +
@@ -308,56 +421,17 @@ homes %>%
         panel.grid.minor.y = element_line(linetype = 2),
         legend.position = 'none')
 
-ggsave('images/homes_ig.png', width = 7, height = 7, dpi = 'retina')
-
-# plot for whites-only plot (similar code to above)
-homes_plot.white <- function(){
-  
-  rl <- tibble(x = c(2004.5), y = c(78.5),
-             race = c('Non-Hispanic White'))
-  homes %>%
-  filter(race == 'Non-Hispanic White') %>%
-  
-  ggplot() +
-  geom_line(aes(year, percent, color = race),
-            size = 1.5) +
-  
-  geom_text(aes(x, y, label = race, color = race), 
-            fontface = 2,
-            data = rl) +
-  
-  scale_color_brewer(palette = 'Paired', direction = -1) +
-  scale_y_continuous(limits = c(40, 80),
-                     breaks = seq(40,80,10),
-                     labels = paste(seq(40,80,10), '%', sep = '')) +
-  scale_x_continuous(limits = c(1994,2020),
-                     breaks = seq(1995,2020,5),
-                     labels = c('\'95', '2000', paste('\'', c('05', 10, 15, 20), sep = ''))) +
-  
-  labs(y = 'Percentage of Home Ownership',
-       x = 'Year',
-       title = 'Percentage of Home Ownership by Race, 1994-2019',
-       subtitle = 'Home ownership among Non-Hispanic Whites over the last 25 years has averaged 73%.\nHome ownership peaked in 2004 at 76%, but has been trending up since 2016.',
-       color = '',
-       caption = 'Source: U.S. Census Bureau, Current Population Survey/Housing Vacancy Survey, March 10, 2020.') +
-  
-  theme(panel.grid.minor.x = element_blank(),
-        panel.grid.minor.y = element_line(linetype = 2),
-        legend.position = 'none')
-  
-}; homes_plot.white()
-# ggsave('images/homes_whiteonly.png', width = 9, height = 5, dpi = 'retina')
+ggsave('images/homes.png', width = 9, height = 5, dpi = 'retina')
 
 diff.area %>% 
   mutate(diff = NHW - Black) %>% 
   summarize(mean = mean(diff), min = min(diff), max = max(diff))
 ```
 
-```{r prison, message = F, warning = F}
-
-# load in data, skipping non-data rows and removing empty columns
+```{r prison_data, message = F, warning = F}
+# load in 2018 data, skipping non-data rows and removing empty columns
 # note: data is X per 100,000 people
-prison <- read_csv('data/prison/p18t06.csv', skip = 11) %>%
+prison.18 <- read_csv('data/prison/p18/p18t06.csv', skip = 11) %>%
   select(-starts_with('X')) %>%
   janitor::clean_names() %>%
   slice(1:11) %>%
@@ -382,7 +456,10 @@ prison.ribbon <- prison %>% select(year, black, white)
 prison.labels <- tibble(x = c(2013.5),
                         y = c(1930,170),
                         labels = c('black', 'white'))
+read_csv('data/prison/p08/p08t06.csv', skip = 10)#[c(1:9),-c(3,5,7,9,)]
+```
 
+```{r prison_plot, message = F, warning = F}
 # draw plot of incarceration rates by race
 prison.race %>%
   
@@ -408,17 +485,12 @@ prison.race %>%
                      breaks = c(2008:2018),
                      labels = c('\'08', '\'09', 2010, paste('\'', c(11:18), sep = ''))) +
   scale_y_continuous(limits = c(0,2250)) +
-  scale_color_brewer(palette='Paired', direction = -1) +
+  scale_color_manual(values = c('#377EB8', '#6baed6')) +
   
-  # theme_dark() +
   theme(panel.grid.minor.x = element_blank(),
-        legend.position = 'none',
-        plot.background = element_rect(fill = '#111111'),
-        title = element_text(color = 'white'),
-        axis.text = element_text(color = 'white'),
-        panel.grid = element_line(color = '#333333'))
+        legend.position = 'none')
 
-ggsave('images/prison_dark.png', width = 8, height = 5, dpi = 'retina')
+ggsave('images/prison.png', width = 9, height = 5, dpi = 'retina')
 
 # create table showing rate of Black Incarceration as multiple of White rate
 prison.ribbon %>% mutate(rate.multiple = black / white) %>% slice(1,11)
@@ -483,7 +555,6 @@ rsq_text <- tibble(x = c(106, 75),
                 bold = 2)
 ```
 
-
 ```{r white_wealth_plot, fig.height=5, fig.width=9}
 # create plot
 county_income %>%
@@ -534,7 +605,6 @@ county_income %>%
 
  # ggsave('images/county_income.png', width = 9, height = 5, dpi = 'retina')
 ```
-
 
 ```{r county_income_gt}
 # create gt of top ten counties with highest white/black income

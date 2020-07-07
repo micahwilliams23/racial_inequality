@@ -1,0 +1,32 @@
+"Bureau of Justice Statistics",,,,,,,,,
+"Filename:  p0014.csv",,,,,,,,,
+"Table #14:  Number of sentenced prisoners under State or Federal jurisdiction, by gender, race, Hispanic origin, and age, 2000",,,,,,,,,
+"Report title:  Prisoners in 2000 NCJ 188207",,,,,,,,,
+"Data source:  National Prisoner Statistics-1",,,,,,,,,
+"Refer questions to:  askbjs@ojp.usdoj.gov  202-307-0765",,,,,,,,,
+"Contact:  Allen Beck or Paige Harrison",,,,,,,,,
+"Date of version:  8/8/01",,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+"Table 14.  Number of sentenced prisoners under State or Federal jurisdiction, by gender, race, Hispanic origin, and age, 2000",,,,,,,,,
+,,,,,,,,,
+,,,,"Number of sentenced prisoners",,,,,
+,,"       Males",,,,,"      Females",,
+"Age","Total/a","White/b","Black/b","Hispanic",,"Total/a","White/b","Black/b","Hispanic"
+,,,,,,,,,
+"Total",1237469,436500,572900,206900,,83668,34500,37400,10000
+"18-19",33300,8400,16300,6800,,1200,600,500,100
+"20-24",199600,56500,98100,38700,,7800,3300,3000,1200
+"25-29",232200,67100,119100,41300,,14700,5300,6600,2000
+"30-34",234000,81900,109400,40000,,21000,8300,9900,2300
+"35-39",212700,79200,101700,30400,,18200,7600,8600,2000
+"40-44",149400,58300,64600,24800,,10200,4100,4800,1100
+"45-54",128800,60300,49200,17800,,8300,3800,3100,1100
+"55 or older"," 42,300"," 23,700"," 11,300"," 6,600",," 1,900"," 1,300"," 600"," 200"
+,,,,,,,,,
+" Note: Based on custody counts from National Prisoners Statistics (NPS-1A) ",,,,,,,,,
+"and updated from jurisdiction counts by gender at yearend. Estimates by age",,,,,,,,,
+"derived from the Survey of Inmates in State and Federal Correctional facilities, ",,,,,,,,,
+"1997. Estimates were rounded to the nearest 100. ",,,,,,,,,
+"a/Includes American Indians, Alaska Natives, Asians, Native Hawaiians, and other Pacific Islanders.",,,,,,,,,
+"b/Excludes Hispanics.",,,,,,,,,

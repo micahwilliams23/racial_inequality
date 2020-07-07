@@ -1,0 +1,21 @@
+Bureau of Justice Statistics,,
+Filename: p08f04.csv,,
+"Figure 4. Sentenced admissions into state prisons, by type of admission, 2000-2008",,
+Report title: Prisoners in 2008 NCJ 228417,,
+"Data source: National Prisoner Statistics, 1b",,
+"Authors: William J. Sabol, Ph.D., Heather C. West, Ph.D., and Matthew Cooper",,
+Refer questions to: askbjs@usdoj.gov   202-307-0765,,
+"Date of version: December 8, 2009",,
+,,
+"Figure 4: Sentenced admissions into state prisons, by type of admission, 2000-2008",,
+As of December 31,Number of sentenced prisoners admitted,
+Year,New court commitments,Parole violators
+2000,"350,431","203,569"
+2001,"365,714","215,450"
+2002,"392,661","207,855"
+2003,"399,843","198,705"
+2004,"411,300","219,033"
+2005,"421,426","232,229"
+2006,"441,606","239,495"
+2007,"431,019","247,851"
+2008,"428,830","248,317"

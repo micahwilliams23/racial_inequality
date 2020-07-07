@@ -1,0 +1,34 @@
+Bureau of Justice Statistics,,,,,,,,,,,,,
+Filename: p08at16.csv,,,,,,,,,,,,,
+"Appendix table 16. Estimated percent of sentenced prisoners under state jurisdiction, by offense, gender, race, and Hispanic origin, yearend 2006",,,,,,,,,,,,,
+Report title: Prisoners in 2008 NCJ 228417,,,,,,,,,,,,,
+"Data source: National Prisoner Statistics, 1b",,,,,,,,,,,,,
+"Authors: William J. Sabol, Ph.D., Heather C. West, Ph.D., and Matthew Cooper",,,,,,,,,,,,,
+Refer questions to: askbjs@usdoj.gov   202-307-0765,,,,,,,,,,,,,
+"Date of version: December 8, 2009",,,,,,,,,,,,,
+,,,,,,,,,,,,,
+"Appendix table 16: Estimated percent of sentenced prisoners under state jurisdiction, by offense, gender, race, and Hispanic origin, yearend 2006",,,,,,,,,,,,,
+Offense,,All inmates,,Male,,Female,,White/a,,Black/a,,Hispanic,
+,Total,100,%,100,%,100,%,100,%,100,%,100,%
+Violent,,50.2,%,51.5,%,32.3,%,45.8,%,50.4,%,58.4,%
+,Murder/b,10.9,,11,,9.5,,7.3,,12.1,,14.8,
+,Manslaughter,1.3,,1.2,,2,,1.5,,1.2,,1,
+,Rape,4.1,,4.4,,0.5,,5.6,,3.3,,3,
+,Other sexual assault,7.9,,8.4,,1.5,,12,,4.1,,9.6,
+,Robbery,13.5,,13.9,,7.7,,7.9,,18,,13.6,
+,Assault,10.3,,10.4,,8.5,,9,,9.8,,13.9,
+,Other violent,2.3,,2.2,,2.6,,2.5,,2,,2.5,
+Property,,20.9,%,20.3,%,28.9,%,28.5,%,18.9,%,10,%
+,Burglary,10.4,,10.7,,6.2,,14.5,,10.5,,1.1,
+,Larceny,3.9,,3.5,,8.5,,4.9,,3.5,,2.9,
+,Motor vehicle theft,2,,2.1,,1.8,,2.3,,1.4,,3.2,
+,Fraud,2.6,,2,,10.2,,4,,2,,1.2,
+,Other property,2,,2,,2.3,,2.8,,1.5,,1.7,
+Drug offenses,,20,%,19.4,%,27.5,%,15.2,%,23.1,%,22.4,%
+Public-order offenses/c,,8.4,%,8.6,%,6.7,%,10.2,%,7,%,8.4,%
+Other/unspecified/d,,0.5,%,0.2,%,4.6,%,0.3,%,0.6,%,0.8,%
+Note: Totals based on prisoners with a sentence of more than 1 year. Detail may not add to total due to rounding. See Methodology for estimation method.,,,,,,,,,,,,,
+a/Excludes Hispanics and persons identifying two or more races.,,,,,,,,,,,,,
+b/Includes negligent manslaughter.,,,,,,,,,,,,,
+"c/Includes weapons, drunk driving, court offenses, commercialized vice, morals and decency offenses, liquor law violations, and other public-order offenses.",,,,,,,,,,,,,
+d/Includes juvenile offenses and other unspecified offense categories.,,,,,,,,,,,,,

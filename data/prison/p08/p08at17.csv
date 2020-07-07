@@ -1,0 +1,29 @@
+Bureau of Justice Statistics,,,,,,,,,,,
+Filename: p08at17.csv,,,,,,,,,,,
+"Appendix table 17. Number of sentenced prisoners in federal prison, by most serious offense, 2000, 2007, and 2008",,,,,,,,,,,
+Report title: Prisoners in 2008 NCJ 228417,,,,,,,,,,,
+"Data source: National Prisoner Statistics, 1b",,,,,,,,,,,
+"Authors: William J. Sabol, Ph.D., Heather C. West, Ph.D., and Matthew Cooper",,,,,,,,,,,
+Refer questions to: askbjs@usdoj.gov   202-307-0765,,,,,,,,,,,
+"Date of version: December 8, 2009",,,,,,,,,,,
+,,,,,,,,,,,
+"Appendix table 17: Number of sentenced prisoners in federal prison, by most serious offense, 2000, 2007, and 2008",,,,,,,,,,,
+Offense,,2000,,2007,,2008,,"Average annual change, 2000-2007",,"Percent change, 2007-2008",
+,Total,"131,739",,"179,204",,"182,333",,4.5,%,1.7,%
+Violent offenses,,"13,740",,"15,647",,"15,483",,1.9,%,-1,%
+,Homicide/a,"1,363",,"2,915",,"2,949",,11.5,,1.2,
+,Robbery,"9,712",,"8,966",,"8,718",,-1.1,,-2.8,
+,Other violent,"2,665",,"3,767",,"3,817",,5.1,,1.3,
+Property offenses,,"10,135",,"10,345",,"11,080",,0.3,%,7.1,%
+,Burglary,462,,504,,475,,1.3,,-5.7,
+,Fraud,"7,506",,"7,834",,"7,728",,0.6,,-1.3,
+,Other property,"2,167",,"2,006",,"2,876",,-1.1,,43.4,
+Drug offenses,,"74,276",,"95,446",,"95,079",,3.6,%,-0.4,%
+Public-order offenses,,"32,325",,"56,273",,"59,298",,8.2,%,5.4,%
+,Immigration,"13,676",,"19,528",,"19,678",,5.2,,0.8,
+,Weapons,"10,822",,"25,435",,"26,942",,13,,5.9,
+,Other,"7,827",,"11,311",,"12,678",,5.4,,12.1,
+Other/unspecified/b,,"1,263",,"1,492",,"1,394",,2.4,%,-6.6,%
+Note: Based on prisoners with a sentence of more than 1 year. All data are for September 30 from the BJS Federal Justice Statistics Program.,,,,,,,,,,,
+"a/Includes murder, negligent and non-negligent manslaughter.",,,,,,,,,,,
+b/Includes offenses not classified.,,,,,,,,,,,

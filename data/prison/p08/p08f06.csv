@@ -1,0 +1,21 @@
+Bureau of Justice Statistics,,,,,
+Filename: p08f06.csv,,,,,
+"Figure 6. ICE detainees held, by country of origin, 2000-2008",,,,,
+Report title: Prisoners in 2008 NCJ 228417,,,,,
+"Data source: National Prisoner Statistics, 1b",,,,,
+"Authors: William J. Sabol, Ph.D., Heather C. West, Ph.D., and Matthew Cooper",,,,,
+Refer questions to: askbjs@usdoj.gov   202-307-0765,,,,,
+"Date of version: December 8, 2009",,,,,
+,,,,,
+"Figure 6: ICE detainees held, by country of origin, 2000-2008",,,,,
+As of December 31,Number of detainees,,,,
+Year,Mexico,El Salvador,Guatemala,Honduras,Cuba
+2000,"4,267","1,125",896,882,"2,328"
+2001,"4,592",969,937,705,"1,731"
+2002,"4,743","1,294","1,290","1,368","1,635"
+2003,"5,025","1,379","1,410","1,469","1,762"
+2004,"4,483","1,284","1,282","1,373","1,483"
+2005,"4,623","1,727","2,081","1,996",499
+2006,"7,211","4,080","2,990","2,455",520
+2007,"10,358","3,005","2,726","2,428",486
+2008,"12,360","3,521","3,227","2,780",716

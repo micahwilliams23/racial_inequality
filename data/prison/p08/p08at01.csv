@@ -1,0 +1,30 @@
+Bureau of Justice Statistics,,,,,,,,,,,,,,,,
+Filename: p08at01.csv,,,,,,,,,,,,,,,,
+"Appendix table 1. Prisoners under the jurisdiction of state or federal prisons or in the custody of state or federal prisons or local jails, December 31, 2000-2008",,,,,,,,,,,,,,,,
+Report title: Prisoners in 2008 NCJ 228417,,,,,,,,,,,,,,,,
+"Data source: National Prisoner Statistics, 1b",,,,,,,,,,,,,,,,
+"Authors: William J. Sabol, Ph.D., Heather C. West, Ph.D., and Matthew Cooper",,,,,,,,,,,,,,,,
+Refer questions to: askbjs@usdoj.gov   202-307-0765,,,,,,,,,,,,,,,,
+"Date of version: December 8, 2009",,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+"Appendix table 1: Prisoners under the jurisdiction of state or federal prisons or in the custody of state or federal prisons or local jails, December 31, 2000-2008",,,,,,,,,,,,,,,,
+,Prisoners under jurisdiction,,,,,,,,,,,,,,,
+Year,Total,,Federal,,State,,Male,,Female,,Sentenced to more than 1 year/a,,Imprisonment rate/b,,,Incarceration rate/c
+2000,"1,391,261",,"145,416",,"1,245,845",,"1,298,027",,"93,234",,"1,331,278",,478,,,684
+2001,"1,404,032",,"156,993",,"1,247,039",,"1,311,053",,"92,979",,"1,345,217",,470,,,685
+2002,"1,440,144",,"163,528",,"1,276,616",,"1,342,513",,"97,631",,"1,380,516",,476,,,701
+2003,"1,468,601",,"173,059",,"1,295,542",,"1,367,755",,"100,846",,"1,408,361",,482,,,712
+2004,"1,497,100",,"180,328",,"1,316,772",,"1,392,278",,"104,822",,"1,433,728",,486,,,723
+2005,"1,527,929",,"187,618",,"1,340,311",,"1,420,303",,"107,626",,"1,462,866",,491,,,737
+2006,"1,569,945",,"193,046",,"1,376,899",,"1,457,486",,"112,459",,"1,504,660",,501,,,751
+2007,"1,598,245",,"199,618",,"1,398,627",,"1,483,740",,"114,505",,"1,532,850",,506,,,756
+2008,"1,610,446",,"201,280",,"1,409,166",,"1,495,594",,"114,852",,"1,540,036",,504,,,754
+,,,,,,,,,,,,,,,,
+"Average annual change, 2000-2007",2,%,4.6,%,1.7,%,1.9,%,3,%,2,%,0.8,%,,1.4
+,,,,,,,,,,,,,,,,
+"Percent change,  2007-2008",0.8,,0.8,,0.8,,0.8,,0.3,,0.5,,-0.3,,,-0.2
+"Note: Jurisdiction refers to the legal authority over a prisoner, regardless of where the prisoner is held.",,,,,,,,,,,,,,,,
+"Custody refers to where an inmate is held, regardless of which entity has jurisdiction over the inmate.",,,,,,,,,,,,,,,,
+"a/Includes prisoners under the legal authority of state or federal correctional officials with sentences of more than 1 year, regardless of where they are held.",,,,,,,,,,,,,,,,
+"b/Imprisonment rate is the number of prisoners sentenced to more than 1 year under state or federal jurisdiction per 100,000 U.S. residents. Resident population estimates are from the U.S. Census Bureau for January 1 of the following year for the yearend rates. ",,,,,,,,,,,,,,,,
+"c/Incarceration rate is the total number of inmates held in custody of state or federal prisons or local jails per 100,000 U.S. residents. ",,,,,,,,,,,,,,,,
