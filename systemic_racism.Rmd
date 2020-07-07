@@ -179,7 +179,8 @@ edu_county <- full_join(edu_white, edu_black, by = colnames(edu_white)) %>%
   ungroup() %>%
   
   # add columns for group (ex. 'White Males'), convert education levels to factor
-  mutate(demo = paste(race, ' ', sex, 's', sep = ''))
+  mutate(demo = paste(race, ' ', sex, 's', sep = ''),
+         percent = estimate / summary_est * 100)
 
 # extract factor order for labelling
 fct_order <- edu_county %>% 
@@ -239,7 +240,7 @@ edu_us %>%
   coord_flip()
 
 # save plot to files
-ggsave('images/education2.png', height = 5, width = 9, dpi = 'retina')
+ggsave('images/education.png', height = 5, width = 9, dpi = 'retina')
 ```
 
 ```{r county_coords}
@@ -302,18 +303,22 @@ edu_black_hs <- edu_county %>%
   # filter for black males with less than hs diploma
   filter(race == 'Black',
          sex == 'Male',
-         variable == 'C15002B_003') %>%
-  mutate(percent.i = 100 - percent)
+         variable != 'C15002B_003') %>%
+  group_by(GEOID) %>%
+  summarize(percent = sum(percent))
   
 edu_black_hs %>%
   
   # join ACS data with county coordinates for map plot
   full_join(county_coords, by = 'GEOID') %>%
+  
+  # filter out Puerto Rico
+  filter(!str_starts(GEOID, '72')) %>%
 
   # plot map, filled by black male educational attainment (more than HS)
   ggplot() +
   geom_polygon(aes(long, lat, group = group, 
-                   fill = percent.i),
+                   fill = percent),
                color = '#666666',
                size = 0.2) +
   
@@ -327,7 +332,7 @@ edu_black_hs %>%
                        na.value = 'gray',
                        guide = 'legend',
                        labels = rev(c('0-85%', '85-92%', '92-96%', '96-100%', '100%'))) +
-  
+
   # add state boundary lines
   geom_path(aes(long, lat, group = group, fill = NULL),
             color = '#666666',
@@ -335,7 +340,7 @@ edu_black_hs %>%
   
   # add title and source note
   labs(title = 'Percent of Black Males With At Least High School Diploma, by County',
-       subtitle = 'Nationwide, highest educational attainment for 30.8% of black men is less than a high school diploma.',
+       subtitle = 'Nationwide, highest educational attainment for 16.1% of black men is less than a high school diploma.',
        caption = 'Source: 2018 American Community Survey. Data for some counties missing.') +
   
   # remove theme, relocate legend
