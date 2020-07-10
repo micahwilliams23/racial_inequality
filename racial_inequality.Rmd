@@ -19,7 +19,9 @@ library(gt)
 library(RColorBrewer)
 library(maptools)
 
-theme_set(theme_minimal())
+theme_set(theme_minimal() + 
+            theme(plot.background = element_rect(fill = '#fdfdfd',
+                                                 color = '#fdfdfd')))
 ribbon.fill = rgb(1,0.3,0.2,0.1)
 ```
 
@@ -91,10 +93,13 @@ us_income %>%
 
 # summarize states to produce nationwide numbers
 brackets <- us_income %>%
+  filter(label != 'Total',
+         !is.na(estimate), !is.na(summary_est)) %>%
   droplevels() %>%
+  select(-percent) %>%
   group_by(label,race) %>%
-  summarize(percent = sum(estimate) / sum(summary_est) * 100) %>%
-  ungroup()
+  nest() %>%
+  mutate(percent = map_dbl(data, ~sum(.$estimate) / sum(.$summary_est) * 100))
 
 # create table of income levels and extract leading values (ex. extract '100' from '$100,000')
 bracket.order <- brackets %>%
@@ -150,7 +155,7 @@ brackets %>%
   coord_flip()
 
 # save plot to files
-# ggsave('images/income.png', height = 5, width = 9, dpi = 'retina')
+ggsave('images/income.png', height = 5, width = 9, dpi = 'retina')
 
 ```
 
@@ -256,7 +261,7 @@ county_income %>%
                    y = lbf.height, yend = lbf.height),
                size = 1.5, color = '#377EB8')
 
- # ggsave('images/county_income.png', width = 9, height = 5, dpi = 'retina')
+ ggsave('images/county_income.png', width = 9, height = 5, dpi = 'retina')
 ```
 
 ```{r education_data}
@@ -724,11 +729,6 @@ ggsave('images/prison.png', width = 9, height = 5, dpi = 'retina')
 prison.ribbon %>% mutate(rate.multiple = black / white) %>% slice(1,11)
 ```
 
-```{r police, include = F}
-# Source: Bureau of Justice Statistics, Law Enforcement Management and Administrative Statistics survey, 2016.
-# read_csv('data/local_police/lpd16pt06.csv')
-```
-
 ```{r county_income_gt}
 # create gt of top ten counties with highest white/black income
 county_income %>% 
@@ -765,6 +765,5 @@ county_income %>%
              white.factor = 'White Income Multiplier')
   
 ```
-
 
 
