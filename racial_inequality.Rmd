@@ -675,41 +675,85 @@ prison.18 <- read_csv('data/prison/p18/p18t06.csv', skip = 11) %>%
 
 
 # remove extra bits from column names
-colnames(prison) <- str_remove(colnames(prison), '_[:alpha:]')
+colnames(prison.18) <- str_remove(colnames(prison.18), '_[:alpha:]')
 
-prison.race <- prison %>%
+prison.race <- prison.18 %>%
   
   # select relevant columns
   select(year, white, black) %>%
   
   # convert table to tidy format (race column, rate column)
-  pivot_longer(cols = c(white, black), names_to = 'race', values_to = 'rate')
+  pivot_longer(cols = c(white, black), names_to = 'race', values_to = 'rate') %>%
+  
+  # add data for national total
+  full_join(bjs_total %>%
+              filter(year >= 2008) %>%
+              mutate(race = 'national rate'), 
+            by = c('year', 'race', 'rate'))
 
-prison.ribbon <- prison %>% select(year, black, white)
+prison.ribbon <- prison.18 %>% select(year, black, white)
 prison.labels <- tibble(x = c(2013.5),
-                        y = c(1930,170),
-                        labels = c('black', 'white'))
-read_csv('data/prison/p08/p08t06.csv', skip = 10)#[c(1:9),-c(3,5,7,9,)]
+                        y = c(1930,170, 650),
+                        labels = c('black', 'white', 'national rate'))
+
+race.dots <- prison.race %>% group_by(race) %>% filter(year %in% c(min(year), max(year)))
+race.labels <- race.dots %>% mutate(label.y = case_when(
+  year == 2018 & race == 'black' | race == 'national rate' ~ rate + 170,
+  TRUE ~ rate - 170))
+
+# import csv from BJS Corrections Statistics Analysis site (national rate per 100,000)
+bjs_total <- read_csv('data/prison/bjs_totals.csv', skip = 9) %>% 
+  slice(1) %>%
+  select(-c(Jurisdiction, X2, X42)) %>% 
+  pivot_longer(cols = c(`1978/1`:`2016`),
+               names_to = 'year',
+               values_to = 'rate') %>%
+  mutate(year = as.numeric(str_remove(year, '(/[:digit:]+)+')))
+
+# create year labels for plot
+year_labels <- paste('\'', str_remove(seq(1980,2015,5), '[:digit:]{2}'), sep = '')
+year_labels[5] <- '2000'
+
+# create tibble of dots to highlight and labels
+bjs.dots <- bjs_total %>% filter(year %in% c(1978, 2007, 2016))
+bjs.labels <- dots %>% mutate(label.y = case_when(year == 1978 ~ rate + 35,
+                                              TRUE ~ rate - 35))
+
+# create table showing rate of Black Incarceration as multiple of White rate
+prison.ribbon %>% mutate(rate.multiple = black / white) %>% slice(1,11)
 ```
 
 ```{r prison_plot, message = F, warning = F}
 # draw plot of incarceration rates by race
 prison.race %>%
   
-  # add line plots, ribbon for area between lines, and text labels
+  # add line plots
   ggplot() +
   geom_line(aes(year, rate, color = race),
             size = 1.5) +
+  
+  # add highlight points
+  geom_point(aes(year, rate, color = race),
+             size = 4, pch = 21, stroke = 2.5,
+             fill = 'white',
+             data = race.dots) +
+  geom_text(aes(year, label.y, label = rate, color = race),
+            size = 4.75,
+            data = race.labels) +
+  
+  # add red ribbon between lines
   geom_ribbon(aes(year, ymin = white, ymax = black),
               fill = ribbon.fill,
               data = prison.ribbon) +
+  
+  # add labels to lines
   geom_text(aes(x, y, label = str_to_title(labels), color = labels),
             fontface = 2,
             data = prison.labels) +
   
   # add title, subtitle, axes labels, caption
   labs(title = 'U.S. Incarceration Rates by Race, 2008-2018',
-       subtitle = 'While the difference in incarceration rates has narrowed in recent years, in 2018\nblack Americans were incarcerated at nearly 6 times the rate of white Americans.', 
+       subtitle = 'While the difference in incarceration rates has narrowed in recent years, in 2018 black Americans were\nincarcerated at nearly 6 times the rate of white Americans. National data available to 2016.', 
        x = 'Year', y = 'Incarceration Rate\n(per 100,000)',
        caption = 'Source: Bureau of Justice Statistics, Federal Justice Statistics Program, U.S. Census Bureau') +
   
@@ -718,15 +762,39 @@ prison.race %>%
                      breaks = c(2008:2018),
                      labels = c('\'08', '\'09', 2010, paste('\'', c(11:18), sep = ''))) +
   scale_y_continuous(limits = c(0,2250)) +
-  scale_color_manual(values = c('#377EB8', '#6baed6')) +
+  scale_color_manual(values = c('#377EB8', '#003333', '#6baed6')) +
   
   theme(panel.grid.minor.x = element_blank(),
         legend.position = 'none')
 
 ggsave('images/prison.png', width = 9, height = 5, dpi = 'retina')
 
-# create table showing rate of Black Incarceration as multiple of White rate
-prison.ribbon %>% mutate(rate.multiple = black / white) %>% slice(1,11)
+# create plot of total imprisonment rate in US, '78-'16
+ggplot(aes(year, rate), data = bjs_total) +
+  geom_line(size = 1.5, color = 'maroon') +
+  
+  # add points to highlight and labels
+  geom_point(size = 4, pch = 21, stroke = 2.5,
+             color = 'maroon', fill = 'white',
+             data = bjs.dots) +
+  geom_text(aes(year, label.y, label = rate),
+            size = 4.75, color = 'maroon',
+            data = bjs.labels) +
+  
+  # add title and change axes
+  labs(title = 'United States Incarceration Rate, 1978-2016',
+       subtitle = 'The incarceration rate in the US nearly quadrupled from 1978 to 2007, but the rate has been in decline since the\nlate 2000\'s.',
+       x = 'Year', y = 'Incarceration Rate\n(per 100,000)',
+       caption = 'Source: Bureau of Justice Statistics') +
+  
+  # change labels on x axis
+  scale_x_continuous(breaks = seq(1980,2015,5),
+                     labels = year_labels) +
+  
+  # remove minor grid lines
+  theme(panel.grid.minor.x = element_blank())
+
+ggsave('images/prison_totals.png', width = 9, height = 5, dpi = 'retina')
 ```
 
 ```{r county_income_gt}
