@@ -18,6 +18,7 @@ library(readxl)
 library(gt)
 library(RColorBrewer)
 library(maptools)
+library(gganimate)
 
 theme_set(theme_minimal() + 
             theme(plot.background = element_rect(fill = '#fdfdfd',
@@ -395,6 +396,9 @@ edu_income %>% filter(race == 'Black') %>%
   geom_point(aes(inc_rank, percent, color = label),
              alpha = 0.5,
              pch = 20) +
+  # add vertical lines
+  geom_vline(xintercept = 42, color = '#777777', lty = 2, size = 0.6) +
+  
   facet_wrap(~label) +
 
   # edit scales to include percent signs
@@ -423,14 +427,15 @@ edu_income %>% filter(label == levels(edu_income$label)[1]) %>%
   
   # create scatterplot, split by education level
   ggplot() +
-  geom_point(aes(inc_rank, percent, color = race),
+  geom_point(aes(income, percent, color = race),
              alpha = 0.7) +
   facet_wrap(~sex) +
 
   # edit scales to include percent signs
   scale_x_continuous(breaks = seq(0,100,20),
                      labels = paste(seq(0,100,20), '%', sep = '')) +
-  scale_y_continuous(breaks = seq(0,100,25),
+  scale_y_continuous(limits = c(0,100),
+                     breaks = seq(0,100,25),
                      labels = paste(seq(0,100,25), '%', sep = '')) +
   scale_color_brewer(palette = 'Paired', direction = -1) +
   
@@ -448,7 +453,81 @@ edu_income %>% filter(label == levels(edu_income$label)[1]) %>%
 
 # save plot to files
 ggsave('images/inc_edu_bachelors.png', width = 9, height = 5, dpi = 'retina')
+
+edu_income %>%
+  filter(label == levels(label)[1]) %>%
+  ggplot(aes(income, percent)) +
+  geom_point(alpha = 0.3,
+             color = 'maroon') +
+  
+  # edit scales to include percent signs
+  scale_x_continuous(breaks = seq(0,140,20),
+                     labels = paste('$', seq(0,140,20), 'K', sep = '')) +
+  scale_y_continuous(limits = c(0,100),
+                     breaks = seq(0,100,25),
+                     labels = paste(seq(0,100,25), '%', sep = '')) +
+  
+  # add labels for title, subtitle, axes, source, legend 
+  labs(title = 'Median Household Income vs. Educational Attainment, by County',
+       subtitle = 'As median household income increases, attainment of advanced degrees increases. Median household income in\nmost counties is concentrated between around $20K/year and $60K/year.',
+       y = 'Percent with Bachelor\'s degree or higher',
+       x = 'Median Household Income',
+       caption = 'Source: 2018 American Community Survey')
+
+ggsave('images/inc_edu_norace.png', width = 9, height = 5, dpi = 'retina')
+
+edu_income %>%
+  filter(label == levels(label)[1]) %>%
+  ggplot(aes(inc_rank, percent)) +
+  geom_point(alpha = 0.3,
+             color = 'maroon') +
+  
+  # edit scales to include percent signs
+  scale_x_continuous(breaks = seq(0,100,20),
+                     labels = paste(seq(0,100,20), '%', sep = '')) +
+  scale_y_continuous(limits = c(0,100),
+                     breaks = seq(0,100,25),
+                     labels = paste(seq(0,100,25), '%', sep = '')) +
+  
+  # add labels for title, subtitle, axes, source, legend 
+  labs(title = 'Median Household Income Rank vs. Educational Attainment, by County',
+       subtitle = 'As median household income increases, attainment of advanced degrees increases.',
+       y = 'Percent with Bachelor\'s degree or higher',
+       x = 'Median Household Income Percentile Ranking',
+       caption = 'Source: 2018 American Community Survey')
+
+ggsave('images/inc_rank_norace.png', width = 9, height = 5, dpi = 'retina')
 ```
+
+```{r income_rank_animation, fig.width=9, fig.height=5}
+anim.data <- county_income %>%
+  select(default = black.income,
+         y = white.income) %>%
+  mutate(Ranked = percent_rank(default),
+         Original = (default - min(default)) / (max(default) - min(default)))
+
+rank_anim <- anim.data %>%
+  pivot_longer(cols = c(Original, Ranked),
+               names_to = 'anim.state',
+               values_to = 'x') %>%
+  select(x, y, anim.state) %>%
+  ggplot(aes(x, y)) +
+  geom_point(color = 'maroon', alpha = 0.3) +
+  
+  #remove axis labels
+  labs(x = '', y = '',
+       title = 'Animation Showing x-axis Transition from Original Data to Percentile Ranking',
+       subtitle = paste('x-axis: ', '{closest_state}', ' data', sep = '')) +
+  theme(axis.text = element_blank()) +
+  
+  # add animation
+  transition_states(anim.state)
+
+animate(rank_anim, width = 9, height = 5, units = 'in', res = 300)
+
+anim_save('images/ranking_anim.gif', width = 9, height = 5, units = 'in', dpi = 'retina')
+```
+
 
 ```{r county_coords}
 # import geometry from shapefiles
