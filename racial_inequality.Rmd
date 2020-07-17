@@ -23,7 +23,6 @@ library(gganimate)
 theme_set(theme_minimal() + 
             theme(plot.background = element_rect(fill = '#fdfdfd',
                                                  color = '#fdfdfd')))
-ribbon.fill = rgb(1,0.3,0.2,0.1)
 ```
 
 ```{r get_acs_table}
@@ -62,7 +61,6 @@ get_acs_table <- function(tbl.id, race, year = 2018, geography = 'county', ...){
 ```
 
 ```{r income_data}
-# message = F to supress messages from get_acs()
 
 # get income data from 2018 ACS
 acs_income_black <- get_acs_table('B19001B', 'Black')
@@ -123,7 +121,7 @@ brackets %>%
        subtitle = 'Includes data from all 50 states, plus Washington D.C. and Puerto Rico.',
        caption = 'Source: 2018 American Community Survey',
        fill = 'Race',
-       y = 'Percent of Race Group in Income Bracket',
+       y = 'Percent in Income Bracket',
        x = 'Household Income in Last 12 Months') +
   
   # flip axes to orient bars horizontally
@@ -140,7 +138,20 @@ black_pops <- get_acs('county',
                       year = 2018,
                       variables = 'B01001B_001',
                       summary_var = 'B01001_001',
-                      cache_table = T)
+                      cache_table = T) %>%
+  select(everything(), total.pop = summary_est, -c(moe, summary_moe)) %>%
+  mutate(race = 'Black')
+
+white_pops <- get_acs('county',
+                      year = 2018,
+                      variables = 'B01001A_001',
+                      summary_var = 'B01001_001',
+                      cache_table = T) %>%
+  select(everything(), total.pop = summary_est, -c(moe, summary_moe)) %>%
+  mutate(race = 'White')
+
+pops <- black_pops %>%
+  full_join(white_pops, by = c('GEOID', 'NAME', 'race', 'variable', 'estimate', 'total.pop'))
 
 # find FIPS codes for top 100 counties by black pop
 black_fips <- black_pops %>% 
@@ -244,6 +255,16 @@ county_income %>%
 edu_white <- get_acs_table('C15002A', 'White', geography = 'county')
 edu_black <- get_acs_table('C15002B', 'Black', geography = 'county')
 
+# get populations by race and sex
+race_sex_pops <- get_acs('county',
+                         year = 2018,
+                         variables = c('B01001A_002',
+                                       'B01001A_017',
+                                       'B01001B_002',
+                                       'B01001B_017'),
+                         cache_table = T) %>%
+  select(-moe)
+
 # join black and white tables together
 edu_county <- full_join(edu_white, edu_black, by = colnames(edu_white)) %>%
   
@@ -288,6 +309,14 @@ edu_us <- edu_county %>%
   mutate(percent = map_dbl(data, ~ sum(.$estimate) / sum(.$summary_est) * 100)) %>%
   select(-data)
 
+# combine education and population data to make education by race table
+edu_race <- edu_county %>%
+  group_by(race, GEOID, label) %>%
+  summarize(est.both = sum(estimate),
+            est.all = sum(summary_est),
+            percent = est.both / est.all * 100) %>%
+  select(-c(est.both, est.all))
+
 edu_income <- county_income %>%
   select(-white.factor) %>%
   pivot_longer(cols = c(black.income, white.income),
@@ -297,10 +326,41 @@ edu_income <- county_income %>%
   mutate(race = str_to_title(race),
          inc_rank = percent_rank(income) * 100) %>%
   select(GEOID, race, income, inc_rank) %>%
-  full_join(edu_county, by = c('GEOID', 'race')) %>%
-  select(-c(estimate, moe, summary_moe, concept, summary_est)) %>%
+  full_join(edu_race, by = c('GEOID', 'race')) %>%
   
   filter(!is.na(percent), !is.na(inc_rank))
+
+edu_inc_model <- edu_income %>% 
+  filter(label == levels(label)[1]) %>%
+  lm(percent ~ income, data = .)
+
+broom::tidy(edu_inc_model)
+
+lbf.height = 90
+
+rsq_text <- tibble(x = c(43.5, 45),
+                y= c(85,lbf.height),
+                labels = c('R^2==0.535',
+                           'percent == 0.463 %*% income.thousands - 1.43'),
+                bold = 2)
+
+edu_income %>%
+  filter(race == 'Black') %>%
+  group_by(label) %>%
+  nest() %>%
+  mutate(mod = map(data, ~lm(percent ~ inc_rank, data = .)),
+         rsq = map_dbl(mod, ~summary(.)$r.squared),
+         coefs = map(mod, ~.$coefficients)) %>%
+  ungroup()
+
+edu_income %>%
+  filter(race == 'Black') %>%
+  group_by(label) %>%
+  nest() %>%
+  mutate(mod = map(data, ~lm(percent ~ income, data = .)),
+         rsq = map_dbl(mod, ~summary(.)$r.squared),
+         coefs = map(mod, ~.$coefficients)) %>%
+  ungroup()
 
 # rm(edu_white, edu_black)
 ```
@@ -347,40 +407,32 @@ ggsave('images/education_race.png', height = 5, width = 9, dpi = 'retina')
 BuPu <- brewer.pal(5, 'BuPu')[2:5]
 
 # filter out white data
-edu_income %>% filter(race == 'Black') %>% 
+edu_income %>% # filter(race == 'Black') %>% 
   
   # create scatterplot
   ggplot() +
-  geom_point(aes(inc_rank, percent, color = label),
-             alpha = 0.5,
-             pch = 20) +
-  
-  # add vertical lines, labels for income distribution
-  geom_vline(xintercept = 42, color = '#444444', lty = 2, size = 0.6) +
-  geom_text(aes(x = 21, y = 93, label = '75% of Black Populations'),
-            color = '#444444') +
-  geom_text(aes(x = 71, y = 93, label = '25% of Black Populations'),
-            color = '#444444') +
+  geom_boxplot(aes(race, inc_rank, fill = race),
+               outlier.shape = NA,
+             alpha = 0.5) +
   
   # edit scales to include percent signs, change colors
-  scale_x_continuous(breaks = seq(0,100,20),
+  scale_y_continuous(breaks = seq(0,100,20),
                      labels = paste(seq(0,100,20), '%', sep = '')) +
-  scale_y_continuous(breaks = seq(0,100,25),
-                     labels = paste(seq(0,100,25), '%', sep = '')) +
-  scale_color_manual(values = BuPu) +
-  
+  scale_fill_brewer(palette = 'Paired', direction =  -1) +
   
   # add labels for title, subtitle, axes, source, legend 
-  labs(title = 'Median Household Income vs. Educational Attainment, by County (Black Only)',
+  labs(title = 'Distribution of Median Household Income, by Race',
        subtitle = 'Black populations are concentrated at lower income levels compared to white populations: 3 in 4 black populations\nare in the bottom 42% of income rankings including black and white populations in counties across the US.',
-       y = 'Percent of County',
-       x = 'Median Household Income Percentile Ranking',
+       x = 'Race',
+       y = 'Median Household Income Percentile Rank',
        color = 'Highest\nEducational\nAttainment',
        caption = 'Source: 2018 American Community Survey') +
   
   # change legend position and layout
   theme(legend.position = 'bottom',) +
-  guides(color = guide_legend(nrow = 2, byrow = T))
+  guides(fill = 'none') +
+  
+  coord_flip()
 
 # save plot to files
 ggsave('images/inc_edu_black.png', width = 9, height = 5, dpi = 'retina')
@@ -395,23 +447,25 @@ edu_income %>% filter(race == 'Black') %>%
   ggplot() +
   geom_point(aes(inc_rank, percent, color = label),
              alpha = 0.5,
-             pch = 20) +
+             pch = 16) +
+  
   # add vertical lines
   geom_vline(xintercept = 42, color = '#777777', lty = 2, size = 0.6) +
-  
-  facet_wrap(~label) +
 
   # edit scales to include percent signs
   scale_x_continuous(breaks = seq(0,100,20),
                      labels = paste(seq(0,100,20), '%', sep = '')) +
-  scale_y_continuous(breaks = seq(0,100,25),
-                     labels = paste(seq(0,100,25), '%', sep = '')) +
+  scale_y_continuous(limits = c(0,80),
+                     breaks = seq(0,80,20),
+                     labels = paste(seq(0,80,20), '%', sep = '')) +
   scale_color_manual(values = BuPu) +
   
+  # break graphs apart by education level
+  facet_wrap(~label) +
   
   # add labels for title, subtitle, axes, source, legend 
   labs(title = 'Median Household Income vs. Educational Attainment, by County (Black Only)',
-       subtitle = 'As income increases, educational attainment increases. However, black populations are concentrated at the lower levels\nof the income scale.',
+       subtitle = 'As income increases, educational attainment increases. However, black populations are concentrated at the lower levels\nof the income scale. Three quarters of counties are to the left of the dotted line.',
        y = 'Percent of County',
        x = 'Median Household Income Percentile Ranking',
        color = 'Highest\nEducational\nAttainment',
@@ -423,42 +477,64 @@ edu_income %>% filter(race == 'Black') %>%
 # save plot to files
 ggsave('images/inc_edu_split.png', width = 9, height = 5, dpi = 'retina')
 
-edu_income %>% filter(label == levels(edu_income$label)[1]) %>% 
+edu_income %>% 
+  filter(label %in% levels(edu_income$label)[c(1,2)]) %>%
+  
+  # join education percentages with populations for weighting
+  left_join(pops, by = c('GEOID', 'race')) %>%
+  
+  #calculate weighting!!!
+  dasdf
+  
+  mutate(inc_grp = cut(inc_rank, breaks = seq(0,100,10),
+                       include.lowest = T)) %>%
+  group_by(inc_grp, race, label) %>%
+  summarize(avg.pct = mean(percent, na.rm = T)) %>%
+  ungroup() %>%
   
   # create scatterplot, split by education level
   ggplot() +
-  geom_point(aes(income, percent, color = race),
-             alpha = 0.7) +
-  facet_wrap(~sex) +
+  geom_col(aes(inc_grp, avg.pct, 
+                 fill = race),
+             alpha = 0.8,
+           position = position_dodge(0.7)) +
 
   # edit scales to include percent signs
-  scale_x_continuous(breaks = seq(0,100,20),
-                     labels = paste(seq(0,100,20), '%', sep = '')) +
-  scale_y_continuous(limits = c(0,100),
-                     breaks = seq(0,100,25),
-                     labels = paste(seq(0,100,25), '%', sep = '')) +
-  scale_color_brewer(palette = 'Paired', direction = -1) +
+  scale_y_continuous(limits = c(0,45),
+                     breaks = seq(0,40,10),
+                     labels = paste(seq(0,40,10), '%', sep = '')) +
+  scale_fill_brewer(palette = 'Paired', direction = -1) +
   
+  facet_wrap(~label) +
   
   # add labels for title, subtitle, axes, source, legend 
-  labs(title = 'Median Household Income vs. Educational Attainment, by County, Race, and Sex',
-       subtitle = 'Poor white populations, while unlikely to have a Bachelor\'s degree or higher, are still more likely than black populations\nat the same income level. As income increases, attainment of advanced degrees increases faster for white populations\nthan for black populations. Females of both races are more likely on average to have a Bachelor\'s degree or higher.',
+  labs(title = 'Average Percent with Bachelor\'s degree or higher, by Median Household Income Ranking',
+       subtitle = 'White populations in the lowest 30% of income rankings, while somewhat unlikely to have a Bachelor\'s degree or higher, are still more likely than black populations\nat the same income levels. As income increases, attainment of advanced degrees increases faster for white populations\nthan for black populations.',
        y = 'Percent with Bachelor\'s degree or higher',
        x = 'Median Household Income Percentile Ranking',
-       color = 'Race', pch = 'Sex',
+       color = 'Race',
        caption = 'Source: 2018 American Community Survey') +
   
   # change legend position and layout
-  theme(legend.position = 'bottom',)
+  theme(legend.position = 'bottom') +
+  coord_flip()
+```
 
+
+```{r income_education_plots}
 # save plot to files
 ggsave('images/inc_edu_bachelors.png', width = 9, height = 5, dpi = 'retina')
 
 edu_income %>%
   filter(label == levels(label)[1]) %>%
   ggplot(aes(income, percent)) +
-  geom_point(alpha = 0.3,
-             color = 'maroon') +
+  geom_point(color = 'maroon',
+             alpha = 0.3) +
+  
+  geom_abline(slope = edu_inc_model$coefficients[2],
+              intercept = edu_inc_model$coefficients[1],
+              color = '#884088',
+              size = 1.5) +
   
   # edit scales to include percent signs
   scale_x_continuous(breaks = seq(0,140,20),
@@ -468,11 +544,22 @@ edu_income %>%
                      labels = paste(seq(0,100,25), '%', sep = '')) +
   
   # add labels for title, subtitle, axes, source, legend 
-  labs(title = 'Median Household Income vs. Educational Attainment, by County',
+  labs(title = 'Median Household Income vs. Attainment of Bachelor\'s Degree or higher, by County',
        subtitle = 'As median household income increases, attainment of advanced degrees increases. Median household income in\nmost counties is concentrated between around $20K/year and $60K/year.',
        y = 'Percent with Bachelor\'s degree or higher',
        x = 'Median Household Income',
-       caption = 'Source: 2018 American Community Survey')
+       caption = 'Source: 2018 American Community Survey') +
+  
+  # add legend for best fit (separate because parse = T)
+  geom_text(aes(x = x, y = y, 
+                label = labels,
+                fontface = 2),
+            parse = T,
+            data = rsq_text) +
+  
+  geom_segment(aes(x = 17, xend = 20,
+                   y = lbf.height, yend = lbf.height),
+               size = 1.5, color = '#884088')
 
 ggsave('images/inc_edu_norace.png', width = 9, height = 5, dpi = 'retina')
 
@@ -527,7 +614,6 @@ animate(rank_anim, width = 9, height = 5, units = 'in', res = 300)
 
 anim_save('images/ranking_anim.gif', width = 9, height = 5, units = 'in', dpi = 'retina')
 ```
-
 
 ```{r county_coords}
 # import geometry from shapefiles
