@@ -7,7 +7,7 @@ output: html_document
 
 ```{r setup}
 
-# hide messages b/c many calls to tinycensus
+# hide messages b/c many calls to tidycensus
 knitr::opts_chunk$set(echo = TRUE,
                       fig.height = 5,
                       fig.width = 9,
@@ -362,6 +362,10 @@ edu_income %>%
          coefs = map(mod, ~.$coefficients)) %>%
   ungroup()
 
+one_sum <- function(v){
+  append(v[1], sum(v))
+}
+
 # rm(edu_white, edu_black)
 ```
 
@@ -477,35 +481,45 @@ edu_income %>% filter(race == 'Black') %>%
 # save plot to files
 ggsave('images/inc_edu_split.png', width = 9, height = 5, dpi = 'retina')
 
+paired.cols <- brewer.pal(4, 'Paired')[c(1,4,2,3)]
+
 edu_income %>% 
   filter(label %in% levels(edu_income$label)[c(1,2)]) %>%
   
   # join education percentages with populations for weighting
   left_join(pops, by = c('GEOID', 'race')) %>%
   
-  #calculate weighting!!!
-  dasdf
-  
   mutate(inc_grp = cut(inc_rank, breaks = seq(0,100,10),
                        include.lowest = T)) %>%
-  group_by(inc_grp, race, label) %>%
-  summarize(avg.pct = mean(percent, na.rm = T)) %>%
-  ungroup() %>%
   
-  # create scatterplot, split by education level
+  group_by(inc_grp, race, label) %>%
+  summarize(avg.pct = weighted.mean(x = percent,
+                                    w = estimate,
+                                    na.rm = T)) %>%
+  ungroup() %>%
+  mutate(col.group = rep(c('bh','bl','wh','wl'), 10)) %>%
+  
+  # fake stacked barplot by adding bars together for one of the levels
+  group_by(inc_grp, race) %>%
+  nest() %>%
+  mutate(avg.pct = map_dbl(data, ~append(.$avg.pct[1], sum(.$avg.pct))))
+    
+  # create barplot, split by education level
   ggplot() +
-  geom_col(aes(inc_grp, avg.pct, 
-                 fill = race),
-             alpha = 0.8,
-           position = position_dodge(0.7)) +
+  geom_col(aes(inc_grp, avg.pct,
+               group = race,
+               fill = col.group),
+             alpha = 1,
+           position = position_dodge()) +
 
   # edit scales to include percent signs
-  scale_y_continuous(limits = c(0,45),
-                     breaks = seq(0,40,10),
-                     labels = paste(seq(0,40,10), '%', sep = '')) +
-  scale_fill_brewer(palette = 'Paired', direction = -1) +
+  # scale_y_continuous(limits = c(0,80),
+  #                    breaks = seq(0,40,10),
+  #                    labels = paste(seq(0,40,10), '%', sep = '')) +
+  scale_fill_manual(values = paired.cols[c(3,1,2,4)], 
+                    breaks = c('bh','bl','wh','wl')) +
   
-  facet_wrap(~label) +
+  # facet_wrap(~label) +
   
   # add labels for title, subtitle, axes, source, legend 
   labs(title = 'Average Percent with Bachelor\'s degree or higher, by Median Household Income Ranking',
@@ -523,7 +537,7 @@ edu_income %>%
 
 ```{r income_education_plots}
 # save plot to files
-ggsave('images/inc_edu_bachelors.png', width = 9, height = 5, dpi = 'retina')
+ggsave('images/inc_edu_bachelors_WT.png', width = 9, height = 5, dpi = 'retina')
 
 edu_income %>%
   filter(label == levels(label)[1]) %>%

@@ -4,4 +4,6 @@
 .Ruserdata
 *.Rproj
 
+raise_green*
+
 data/local_police/*
